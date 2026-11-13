@@ -82,10 +82,10 @@ ChatGPTWeb/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
 首次配置：
 
 1. 登录 [Codemagic](https://codemagic.io/) 并选择 `Add application`。
-2. 连接 GitHub，选择公开仓库 `tt-P607/ChatGPT_Web`。
+2. 连接 GitHub，选择你的 Fork 仓库 `doomedwkk/ChatGPT_Web`（或你自己的 Fork 地址）。
 3. 项目类型选择 `Other`，构建配置选择 `Codemagic YAML`。
 4. 保存应用后选择 `Start new build`。
-5. Branch 选择 `main`，Workflow 选择 `iOS TrollStore IPA`（ID 为 `ios-trollstore`）。
+5. Branch 选择 `chatgpt-ios16-performance`（或你准备构建的分支），Workflow 选择 `iOS TrollStore IPA`（ID 为 `ios-trollstore`）。
 6. 启动构建，不需要填写证书或环境变量。
 
 构建完成后，在该次 Build 的 `Artifacts` 区域下载：
