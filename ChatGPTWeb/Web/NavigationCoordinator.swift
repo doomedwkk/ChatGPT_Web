@@ -1,11 +1,17 @@
 import UIKit
 import WebKit
+import os
 
 final class NavigationCoordinator: NSObject {
     private weak var presentingViewController: UIViewController?
     private weak var webView: WKWebView?
     private weak var errorView: WebErrorView?
     private let navigationPolicy = NavigationPolicy()
+    private let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "ChatGPTWeb",
+        category: "WebNavigation"
+    )
+    private var navigationStartedAt: Date?
     private let recoveryURL = URL(string: "https://chatgpt.com/")!
     private var failedRequest: URLRequest?
     private lazy var downloadCoordinator = DownloadCoordinator(
@@ -62,6 +68,9 @@ final class NavigationCoordinator: NSObject {
     }
 
     private func showLoadError(_ error: Error) {
+        let nsError = error as NSError
+        logger.error("Navigation failed; domain=\(nsError.domain, privacy: .public), code=\(nsError.code)")
+        navigationStartedAt = nil
         let urlError = error as? URLError
         guard urlError?.code != .cancelled else { return }
         failedRequest = failedRequest ?? webView?.url.map { URLRequest(url: $0) }
@@ -178,12 +187,22 @@ extension NavigationCoordinator: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        if let startedAt = navigationStartedAt {
+            let elapsed = Date().timeIntervalSince(startedAt)
+            logger.info("Navigation finished in \(String(format: "%.2f", elapsed), privacy: .public)s")
+        } else {
+            logger.info("Navigation finished")
+        }
+        navigationStartedAt = nil
         failedRequest = nil
         webView.scrollView.refreshControl?.endRefreshing()
         errorView?.isHidden = true
     }
 
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        navigationStartedAt = Date()
+        let host = webView.url?.host ?? "unknown"
+        logger.info("Navigation started; host=\(host, privacy: .public)")
         errorView?.isHidden = true
     }
 
@@ -204,6 +223,9 @@ extension NavigationCoordinator: WKNavigationDelegate {
     }
 
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        navigationStartedAt = nil
+        let host = webView.url?.host ?? "unknown"
+        logger.error("Web content process terminated; host=\(host, privacy: .public)")
         if webView.url != nil {
             webView.reload()
         } else {
