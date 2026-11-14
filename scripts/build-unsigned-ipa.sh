@@ -7,8 +7,13 @@ DERIVED_DATA_DIR="${BUILD_DIR}/DerivedData"
 PAYLOAD_DIR="${BUILD_DIR}/Payload"
 APP_PATH="${DERIVED_DATA_DIR}/Build/Products/Release-iphoneos/ChatGPTWeb.app"
 IPA_PATH="${BUILD_DIR}/ChatGPTWeb-unsigned.ipa"
+ICON_SVG="${ROOT_DIR}/Artwork/AnimeAppIcon.svg"
+ICON_PNG="${ROOT_DIR}/ChatGPTWeb/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"
 
 rm -rf "${DERIVED_DATA_DIR}" "${PAYLOAD_DIR}" "${IPA_PATH}"
+
+# Render the anime SVG into the PNG asset consumed by Xcode.
+swift "${ROOT_DIR}/scripts/render-app-icon.swift" "${ICON_SVG}" "${ICON_PNG}"
 
 xcodebuild \
     -project "${ROOT_DIR}/ChatGPTWeb.xcodeproj" \
