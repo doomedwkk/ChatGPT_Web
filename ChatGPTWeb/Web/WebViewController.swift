@@ -373,8 +373,8 @@ private final class FuturisticLaunchOverlay: UIView {
 
         if !UIAccessibility.isReduceMotionEnabled {
             let sweep = CABasicAnimation(keyPath: "position.y")
-            sweep.fromValue = bounds.height * 0.48
-            sweep.toValue = bounds.height * 0.82
+            sweep.fromValue = -UIScreen.main.bounds.height * 0.10
+            sweep.toValue = UIScreen.main.bounds.height * 0.35
             sweep.duration = 3.8
             sweep.repeatCount = .infinity
             cityScanBeam.add(sweep, forKey: "citySweep")
