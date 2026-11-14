@@ -216,43 +216,46 @@ textarea::placeholder, [contenteditable=true][data-placeholder] {
 
 /* controls */
 .nc-neon-control {
-  border: 2px solid var(--nc-ink3) !important;
-  border-radius: 8px !important;
-  background: rgba(255, 255, 255, .05) !important;
-  color: #d7e3f2 !important;
+  /* geometry stays native: outline and shadow never add layout */
+  outline: 2px solid var(--nc-ink3) !important;
+  outline-offset: 0 !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, .045) !important;
+  color: #dbe7f6 !important;
   box-shadow: 2px 2px 0 var(--nc-ink3) !important;
-  transition: transform .09s cubic-bezier(.2, .9, .2, 1), box-shadow .09s ease, filter .12s ease !important;
+  transition: transform .09s cubic-bezier(.2, .9, .2, 1), box-shadow .09s ease, background-color .12s ease !important;
   -webkit-tap-highlight-color: transparent !important;
 }
+.nc-neon-control nc-icon,
 .nc-neon-control svg {
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .22)) !important;
+  color: inherit !important;
+  filter: drop-shadow(0 0 6px currentColor) !important;
 }
 .nc-neon-control.nc-attach {
-  color: var(--nc-ink3) !important;
-  background: linear-gradient(180deg, #6ff3ff, #0aa7c4) !important;
-  box-shadow: 2px 2px 0 var(--nc-ink3), 0 0 12px rgba(37, 230, 255, .40) !important;
+  color: var(--nc-cyan) !important;
+  background: rgba(37, 230, 255, .10) !important;
 }
 .nc-neon-control.nc-voice {
-  color: var(--nc-ink3) !important;
-  background: linear-gradient(180deg, #ff8ec0, #d9276f) !important;
-  box-shadow: 2px 2px 0 var(--nc-ink3), 0 0 12px rgba(255, 79, 154, .40) !important;
+  color: var(--nc-pink) !important;
+  background: rgba(255, 79, 154, .10) !important;
 }
 .nc-neon-control.nc-stop {
-  color: #fff !important;
-  background: linear-gradient(180deg, #ff6b84, #c31f3c) !important;
+  color: #ff5c7a !important;
+  background: rgba(255, 77, 109, .14) !important;
 }
 .nc-neon-control.nc-send {
   color: var(--nc-ink3) !important;
   background:
     repeating-linear-gradient(135deg, rgba(7, 7, 13, 0) 0 6px, rgba(7, 7, 13, .10) 6px 12px),
     linear-gradient(180deg, #fff45c, var(--nc-yellow)) !important;
-  box-shadow: 2px 2px 0 var(--nc-ink3), 0 0 16px rgba(252, 238, 10, .45) !important;
+  box-shadow: 2px 2px 0 var(--nc-ink3), 0 0 14px rgba(252, 238, 10, .40) !important;
 }
-.nc-neon-control:active,
-.nc-neon-control.nc-send:active {
+.nc-neon-control.nc-send svg {
+  filter: none !important;
+}
+.nc-neon-control:active {
   transform: translate(2px, 2px) !important;
   box-shadow: none !important;
-  filter: brightness(1.08) !important;
 }
 
 [role=dialog] textarea, form textarea, textarea {
@@ -512,42 +515,6 @@ main > header {
 .composer-wrap,
 [data-testid*=composer-wrap] {
   background: linear-gradient(180deg, rgba(5, 7, 14, 0) 0%, rgba(5, 7, 14, .96) 46%) !important;
-}
-
-.nc-neon-control {
-  border: 2.5px solid var(--nc-ink3) !important;
-  border-radius: 3px !important;
-  box-shadow: 3px 3px 0 var(--nc-ink3) !important;
-  transition: transform .08s ease, box-shadow .08s ease, background .12s ease !important;
-  -webkit-tap-highlight-color: transparent !important;
-}
-.nc-neon-control:active {
-  transform: translate(3px, 3px) !important;
-  box-shadow: 0 0 0 var(--nc-ink3) !important;
-}
-.nc-neon-control.nc-attach {
-  color: var(--nc-ink3) !important;
-  background: linear-gradient(180deg, #6ff3ff, var(--nc-cyan-deep)) !important;
-  box-shadow: 3px 3px 0 var(--nc-ink3), 0 0 18px rgba(37, 230, 255, .45) !important;
-}
-.nc-neon-control.nc-voice {
-  color: var(--nc-ink3) !important;
-  background: linear-gradient(180deg, #ff8ec0, #d9276f) !important;
-  box-shadow: 3px 3px 0 var(--nc-ink3), 0 0 18px rgba(255, 79, 154, .45) !important;
-}
-.nc-neon-control.nc-stop {
-  color: #fff !important;
-  background: linear-gradient(180deg, #ff6b84, #c31f3c) !important;
-}
-.nc-neon-control.nc-send {
-  color: var(--nc-ink3) !important;
-  background:
-    repeating-linear-gradient(135deg, rgba(252, 238, 10, .0) 0 6px, rgba(7, 7, 13, .10) 6px 12px),
-    linear-gradient(180deg, #fff45c, var(--nc-yellow)) !important;
-  box-shadow: 3px 3px 0 var(--nc-ink3), 0 0 22px rgba(252, 238, 10, .55) !important;
-}
-.nc-neon-control svg {
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .28));
 }
 
 /* ---------- settings / menus / sheets ---------- */
