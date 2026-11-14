@@ -135,7 +135,7 @@ private final class FuturisticLaunchOverlay: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         backgroundGradient.frame = bounds
-        let center = CGPoint(x: logoContainer.bounds.midX, y: logoContainer.bounds.midY)
+        let center = CGPoint(x: logoContainer.frame.midX, y: logoContainer.frame.midY)
         if let track = progressTrackView {
             progressFill.frame = CGRect(x: 0, y: 0, width: track.bounds.width * currentProgress, height: track.bounds.height)
             scanLine.frame = CGRect(x: 0, y: 0, width: 3, height: track.bounds.height)
