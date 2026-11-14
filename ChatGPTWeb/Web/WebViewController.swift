@@ -125,7 +125,6 @@ private final class FuturisticLaunchOverlay: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureAppearance()
-        configureLayout()
     }
 
     required init?(coder: NSCoder) {
@@ -195,13 +194,13 @@ private final class FuturisticLaunchOverlay: UIView {
 
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
         logoLabel.text = "GPT"
-        logoLabel.font = .systemFont(ofSize: 25, weight: .bold, design: .rounded)
+        logoLabel.font = .systemFont(ofSize: 25, weight: .bold)
         logoLabel.textColor = UIColor(red: 0.72, green: 0.96, blue: 1, alpha: 1)
         logoLabel.textAlignment = .center
         logoContainer.addSubview(logoLabel)
 
         titleLabel.text = "CHATGPT WEB"
-        titleLabel.font = .systemFont(ofSize: 19, weight: .semibold, design: .rounded)
+        titleLabel.font = .systemFont(ofSize: 19, weight: .semibold)
         titleLabel.textColor = UIColor(red: 0.88, green: 0.96, blue: 1, alpha: 1)
         titleLabel.textAlignment = .center
         titleLabel.letterSpacing(3)
