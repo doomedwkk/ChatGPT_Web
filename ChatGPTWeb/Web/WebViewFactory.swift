@@ -33,35 +33,44 @@ enum WebViewFactory {
       color-scheme:dark!important;
       --nc-ink:#eaf7ff;--nc-muted:#a9c3d2;--nc-yellow:#ffdf55;--nc-cyan:#59f2ee;
       --nc-pink:#ff62b0;--nc-blue:#69aaff;--nc-violet:#a58bff;
-      --nc-bg:#101b31;--nc-glass:rgba(17,31,53,.90);--nc-glass2:rgba(25,43,68,.94);
-      --nc-line:rgba(89,242,238,.46);--nc-shadow:rgba(0,0,0,.28);
+      --nc-bg:#17233d;--nc-glass:rgba(24,39,66,.78);--nc-glass2:rgba(31,49,79,.84);
+      --nc-line:rgba(89,242,238,.58);--nc-shadow:rgba(0,0,0,.28);
      }
-     html,body {min-height:100%;background:#14233b!important;color:var(--nc-ink)!important;color-scheme:dark!important}
+     html,body {min-height:100%;background:transparent!important;color:var(--nc-ink)!important;color-scheme:dark!important}
      body {
-      background:
-       radial-gradient(ellipse at 12% 18%,rgba(255,98,176,.28),transparent 33%),
-       radial-gradient(ellipse at 86% 23%,rgba(57,179,228,.27),transparent 37%),
-       radial-gradient(ellipse at 52% 78%,rgba(255,193,72,.14),transparent 40%),
-       linear-gradient(145deg,#1b2948 0%,#172b42 43%,#26324b 72%,#17243b 100%)!important;
+      background:radial-gradient(ellipse at 50% 42%,rgba(43,78,116,.10),transparent 62%)!important;
       background-attachment:fixed!important;color:var(--nc-ink)!important;
       font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif!important;
      }
-     /* A layered city panorama: colored haze, high-rises, lit windows, holographic billboards. */
-     .nc-world {position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;contain:strict}
-     .nc-world:before {
-      content:"";position:absolute;left:-5%;right:-5%;bottom:0;height:43%;
+     /* Full-screen Night City panorama: layered skyline, window grids, rain haze and holographic light. */
+     .nc-world {position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;contain:strict;
       background:
-       repeating-linear-gradient(90deg,transparent 0 13px,rgba(5,14,29,.78) 14px 48px,transparent 49px 56px,rgba(11,24,43,.92) 57px 104px,transparent 105px 113px),
-       repeating-linear-gradient(0deg,transparent 0 12px,rgba(255,222,85,.34) 13px 14px,transparent 15px 24px),
-       linear-gradient(180deg,rgba(30,49,74,.18),rgba(7,15,30,.80));
-      -webkit-mask-image:linear-gradient(to top,black 0%,black 55%,transparent 100%);
-      mask-image:linear-gradient(to top,black 0%,black 55%,transparent 100%);
+       radial-gradient(ellipse at 12% 22%,rgba(255,67,166,.38),transparent 31%),
+       radial-gradient(ellipse at 88% 29%,rgba(36,205,231,.34),transparent 34%),
+       radial-gradient(ellipse at 52% 66%,rgba(111,85,220,.28),transparent 46%),
+       linear-gradient(180deg,#18213c 0%,#253552 38%,#34445c 67%,#17243a 100%);
+     }
+     .nc-world:before {
+      content:"";position:absolute;left:-8%;right:-8%;bottom:0;height:57%;
+      background:
+       repeating-linear-gradient(90deg,transparent 0 11px,rgba(255,213,91,.78) 12px 14px,transparent 15px 22px,rgba(78,224,238,.55) 23px 25px,transparent 26px 38px),
+       repeating-linear-gradient(0deg,transparent 0 15px,rgba(255,196,83,.38) 16px 18px,transparent 19px 31px),
+       repeating-linear-gradient(90deg,rgba(7,17,34,.94) 0 32px,rgba(20,36,59,.98) 33px 67px,rgba(8,17,34,.94) 68px 104px,transparent 105px 119px);
+      clip-path:polygon(0 28%,8% 28%,8% 13%,16% 13%,16% 36%,23% 36%,23% 5%,31% 5%,31% 27%,39% 27%,39% 17%,47% 17%,47% 0,56% 0,56% 31%,64% 31%,64% 11%,72% 11%,72% 35%,80% 35%,80% 8%,88% 8%,88% 24%,100% 24%,100% 100%,0 100%);
+      -webkit-mask-image:linear-gradient(to top,black 0%,black 78%,transparent 100%);
+      mask-image:linear-gradient(to top,black 0%,black 78%,transparent 100%);
+      filter:drop-shadow(0 -8px 18px rgba(70,217,235,.15));
      }
      .nc-world:after {
       content:"";position:absolute;inset:0;
-      background:repeating-linear-gradient(0deg,transparent 0 5px,rgba(145,211,255,.025) 6px 7px);
-      opacity:.55;
+      background:
+       linear-gradient(112deg,transparent 0 24%,rgba(255,74,176,.09) 25%,transparent 39%),
+       linear-gradient(72deg,transparent 0 57%,rgba(68,231,239,.10) 58%,transparent 76%),
+       repeating-linear-gradient(0deg,transparent 0 5px,rgba(190,225,255,.045) 6px 7px);
+      opacity:.82;
      }
+     .nc-world .nc-haze {position:absolute;inset:35% -10% 0;background:linear-gradient(180deg,transparent,rgba(67,189,211,.13) 48%,rgba(15,24,43,.55));filter:blur(18px)}
+     .nc-world .nc-sign.c {top:58%;right:9%;width:94px;min-height:43px;border-color:#68a9ff;background:linear-gradient(130deg,rgba(22,53,104,.95),rgba(32,39,82,.94));box-shadow:0 0 12px rgba(105,170,255,.65),0 0 28px rgba(105,170,255,.28);text-shadow:0 0 10px #69aaff;transform:perspective(180px) rotateY(-5deg)}
      .nc-sign {
       position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;
       padding:8px 11px;min-height:37px;box-sizing:border-box;
@@ -75,8 +84,10 @@ enum WebViewFactory {
      .nc-sign.a {top:17%;right:-8px;width:122px;min-height:66px;color:#fff1fb;border-color:var(--nc-pink);border-left-color:var(--nc-pink);background:linear-gradient(130deg,rgba(79,24,66,.92),rgba(27,36,67,.9));box-shadow:0 0 9px rgba(255,98,176,.6),0 0 28px rgba(255,98,176,.25);text-shadow:0 0 10px var(--nc-pink)}
      .nc-sign.b {top:39%;left:-13px;width:105px;min-height:54px;transform:perspective(180px) rotateY(8deg);border-color:var(--nc-yellow);border-left-color:var(--nc-yellow);background:linear-gradient(130deg,rgba(82,61,25,.94),rgba(27,36,67,.9));box-shadow:0 0 9px rgba(255,223,85,.55),0 0 24px rgba(255,223,85,.2);text-shadow:0 0 9px var(--nc-yellow)}
      #root,#__next,body>div:not(.nc-world) {position:relative;z-index:1;background:transparent!important}
-     main,[role=main],#thread,[data-testid*=conversation], [data-testid*=conversation-turns],
-     [class*=conversation], [class*=Conversation] {background:transparent!important}
+     main,[role=main],#thread,[data-testid*=conversation],[data-testid*=conversation-turns],
+     [class*=conversation],[class*=Conversation],[class*=scrollArea],[class*=scroll-area] {background:transparent!important}
+     main>div, [role=main]>div {background-color:transparent!important}
+     [data-testid*=conversation] :where(section,article) {background-color:transparent!important}
      body:before {content:"";position:fixed;top:0;left:0;right:0;height:3px;z-index:99999;pointer-events:none;background:linear-gradient(90deg,var(--nc-pink),var(--nc-violet),var(--nc-cyan),var(--nc-yellow));box-shadow:0 0 13px rgba(89,242,238,.7)}
      body :where(p,li,h1,h2,h3,h4,h5,h6,strong,em,b,i,label,small,blockquote,td,th,time,figcaption,span) {color:var(--nc-ink)}
      body :where(a) {color:var(--nc-cyan)!important}
@@ -110,7 +121,7 @@ enum WebViewFactory {
      [data-message-author-role=assistant] pre,[data-message-author-role=assistant] code,pre,code {
       background:rgba(8,19,37,.82)!important;color:#c7faff!important;border:1px solid rgba(89,242,238,.30)!important;border-radius:7px!important
      }
-     /* Composer is a neon street kiosk with individual illuminated controls. */
+     /* Composer is one coherent neon street terminal; all controls share the same chassis. */
      form:has(textarea),[data-testid*=composer],[class*=composer] {
       background:linear-gradient(120deg,rgba(24,43,68,.97),rgba(43,39,68,.97))!important;
       border:1px solid rgba(89,242,238,.62)!important;border-radius:13px!important;
@@ -121,17 +132,25 @@ enum WebViewFactory {
      textarea::placeholder,[contenteditable=true][data-placeholder] {color:#b4c9dc!important;-webkit-text-fill-color:#b4c9dc!important;opacity:1!important}
      /* Accessible labels let us distinguish attach, voice, send and stop without replacing their native actions. */
      .nc-neon-control {
-      min-width:38px!important;min-height:38px!important;border-radius:9px!important;
-      border:1px solid rgba(89,242,238,.62)!important;background:linear-gradient(145deg,rgba(36,83,105,.96),rgba(29,49,79,.96))!important;
-      color:#eaffff!important;box-shadow:0 0 9px rgba(89,242,238,.20),inset 0 0 10px rgba(89,242,238,.10)!important;
+      position:relative!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+      min-width:40px!important;min-height:40px!important;width:40px!important;height:40px!important;
+      padding:0!important;overflow:visible!important;border-radius:7px!important;
+      border:1px solid rgba(117,238,245,.88)!important;
+      background:linear-gradient(145deg,rgba(21,62,87,.98),rgba(23,35,66,.98))!important;
+      color:#eaffff!important;
+      box-shadow:0 0 0 2px rgba(34,198,218,.12),0 0 9px rgba(89,242,238,.38),0 0 20px rgba(89,242,238,.16),inset 0 0 12px rgba(89,242,238,.17)!important;
+      text-shadow:0 0 8px currentColor!important;
       transition:transform .14s ease,filter .14s ease,box-shadow .14s ease!important;
      }
-     .nc-neon-control:active {transform:scale(.92)!important;filter:brightness(1.3)!important;box-shadow:0 0 18px rgba(89,242,238,.58)!important}
-     .nc-neon-control.nc-attach {border-color:rgba(105,170,255,.85)!important;background:linear-gradient(135deg,rgba(36,74,124,.98),rgba(34,53,86,.98))!important;box-shadow:0 0 12px rgba(105,170,255,.24)!important}
-     .nc-neon-control.nc-voice {border-color:rgba(255,98,176,.85)!important;background:linear-gradient(135deg,rgba(111,39,91,.98),rgba(59,39,79,.98))!important;box-shadow:0 0 12px rgba(255,98,176,.27)!important}
-     .nc-neon-control.nc-send {border-color:var(--nc-yellow)!important;background:linear-gradient(135deg,#ffe978,#ffb83f)!important;color:#252238!important;box-shadow:0 0 8px rgba(255,223,85,.55),0 0 20px rgba(255,185,63,.25)!important}
-     .nc-neon-control.nc-stop {border-color:#ff668e!important;background:linear-gradient(135deg,#ff658c,#bd3c79)!important;color:white!important;box-shadow:0 0 10px rgba(255,75,128,.48)!important}
-     .nc-neon-control svg {filter:drop-shadow(0 0 3px currentColor)}
+     .nc-neon-control:before {content:"";position:absolute;inset:3px;border:1px solid rgba(219,255,255,.20);border-radius:4px;pointer-events:none}
+     .nc-neon-control:after {content:"";position:absolute;left:7px;right:7px;bottom:-3px;height:2px;background:currentColor;opacity:.85;box-shadow:0 0 7px currentColor;pointer-events:none}
+     .nc-neon-control:active {transform:translateY(1px) scale(.94)!important;filter:brightness(1.35)!important;box-shadow:0 0 16px currentColor,inset 0 0 15px rgba(255,255,255,.18)!important}
+     .nc-neon-control.nc-attach,.nc-neon-control.nc-voice,.nc-neon-control.nc-send,.nc-neon-control.nc-stop {background:linear-gradient(145deg,rgba(21,62,87,.98),rgba(23,35,66,.98))!important}
+     .nc-neon-control.nc-attach {color:#8ec7ff!important;border-color:#8ec7ff!important;box-shadow:0 0 0 2px rgba(105,170,255,.12),0 0 12px rgba(105,170,255,.42),inset 0 0 12px rgba(105,170,255,.16)!important}
+     .nc-neon-control.nc-voice {color:#ff8bc8!important;border-color:#ff8bc8!important;box-shadow:0 0 0 2px rgba(255,98,176,.12),0 0 12px rgba(255,98,176,.42),inset 0 0 12px rgba(255,98,176,.16)!important}
+     .nc-neon-control.nc-send {color:#ffe77a!important;border-color:#ffe77a!important;box-shadow:0 0 0 2px rgba(255,223,85,.12),0 0 14px rgba(255,223,85,.48),inset 0 0 12px rgba(255,223,85,.17)!important}
+     .nc-neon-control.nc-stop {color:#ff829d!important;border-color:#ff829d!important;box-shadow:0 0 0 2px rgba(255,75,128,.12),0 0 12px rgba(255,75,128,.42),inset 0 0 12px rgba(255,75,128,.16)!important}
+     .nc-neon-control svg {filter:drop-shadow(0 0 4px currentColor)!important}
      button:focus-visible,textarea:focus-visible,[contenteditable=true]:focus-visible {outline:2px solid var(--nc-yellow)!important;outline-offset:2px!important}
      ::selection {background:rgba(255,223,85,.38)!important;color:white!important}
      * {scrollbar-color:#5acbd6 transparent!important}
