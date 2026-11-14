@@ -155,19 +155,19 @@ private final class FuturisticLaunchOverlay: UIView {
     }
 
     private func configureAppearance() {
-        backgroundColor = UIColor(red: 0.018, green: 0.035, blue: 0.085, alpha: 1)
+        backgroundColor = UIColor(red: 0.018, green: 0.020, blue: 0.030, alpha: 1)
 
         backgroundGradient.colors = [
-            UIColor(red: 0.015, green: 0.025, blue: 0.070, alpha: 1).cgColor,
-            UIColor(red: 0.025, green: 0.075, blue: 0.155, alpha: 1).cgColor,
-            UIColor(red: 0.010, green: 0.020, blue: 0.060, alpha: 1).cgColor
+            UIColor(red: 0.10, green: 0.035, blue: 0.075, alpha: 1).cgColor,
+            UIColor(red: 0.025, green: 0.035, blue: 0.055, alpha: 1).cgColor,
+            UIColor(red: 0.008, green: 0.012, blue: 0.020, alpha: 1).cgColor
         ]
         backgroundGradient.startPoint = CGPoint(x: 0.1, y: 0)
         backgroundGradient.endPoint = CGPoint(x: 0.9, y: 1)
         layer.insertSublayer(backgroundGradient, at: 0)
 
         outerRing.fillColor = UIColor.clear.cgColor
-        outerRing.strokeColor = UIColor(red: 0.12, green: 0.82, blue: 1, alpha: 0.9).cgColor
+        outerRing.strokeColor = UIColor(red: 1.00, green: 0.78, blue: 0.12, alpha: 0.95).cgColor
         outerRing.lineWidth = 2
         outerRing.lineDashPattern = [3, 7]
         outerRing.shadowColor = UIColor.cyan.cgColor
@@ -177,43 +177,43 @@ private final class FuturisticLaunchOverlay: UIView {
         layer.addSublayer(outerRing)
 
         innerRing.fillColor = UIColor.clear.cgColor
-        innerRing.strokeColor = UIColor(red: 0.34, green: 0.55, blue: 1, alpha: 0.65).cgColor
+        innerRing.strokeColor = UIColor(red: 0.96, green: 0.18, blue: 0.58, alpha: 0.72).cgColor
         innerRing.lineWidth = 1.5
         innerRing.lineDashPattern = [42, 12]
         layer.addSublayer(innerRing)
 
         logoContainer.translatesAutoresizingMaskIntoConstraints = false
-        logoContainer.backgroundColor = UIColor(red: 0.04, green: 0.12, blue: 0.24, alpha: 0.9)
+        logoContainer.backgroundColor = UIColor(red: 0.025, green: 0.045, blue: 0.065, alpha: 0.94)
         logoContainer.layer.cornerRadius = 43
         logoContainer.layer.borderWidth = 1
-        logoContainer.layer.borderColor = UIColor(red: 0.24, green: 0.82, blue: 1, alpha: 0.8).cgColor
+        logoContainer.layer.borderColor = UIColor(red: 1.00, green: 0.78, blue: 0.12, alpha: 0.82).cgColor
         logoContainer.layer.shadowColor = UIColor.cyan.cgColor
         logoContainer.layer.shadowOpacity = 0.55
         logoContainer.layer.shadowRadius = 24
         logoContainer.layer.shadowOffset = .zero
 
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
-        logoLabel.text = "GPT"
+        logoLabel.text = "NC-07"
         logoLabel.font = .systemFont(ofSize: 25, weight: .bold)
-        logoLabel.textColor = UIColor(red: 0.72, green: 0.96, blue: 1, alpha: 1)
+        logoLabel.textColor = UIColor(red: 1.00, green: 0.84, blue: 0.38, alpha: 1)
         logoLabel.textAlignment = .center
         logoContainer.addSubview(logoLabel)
 
-        titleLabel.text = "CHATGPT WEB"
+        titleLabel.text = "NIGHT CITY"
         titleLabel.font = .systemFont(ofSize: 19, weight: .semibold)
-        titleLabel.textColor = UIColor(red: 0.88, green: 0.96, blue: 1, alpha: 1)
+        titleLabel.textColor = UIColor(red: 1.00, green: 0.93, blue: 0.76, alpha: 1)
         titleLabel.textAlignment = .center
         titleLabel.letterSpacing(3)
 
-        subtitleLabel.text = "YOUR AI INTERFACE"
+        subtitleLabel.text = "NETRUNNER ACCESS NODE"
         subtitleLabel.font = .monospacedSystemFont(ofSize: 10, weight: .medium)
-        subtitleLabel.textColor = UIColor(red: 0.37, green: 0.69, blue: 0.86, alpha: 1)
+        subtitleLabel.textColor = UIColor(red: 0.96, green: 0.62, blue: 0.28, alpha: 1)
         subtitleLabel.textAlignment = .center
         subtitleLabel.letterSpacing(2)
 
-        statusLabel.text = "ESTABLISHING SECURE CONNECTION"
+        statusLabel.text = "CONNECTING TO CITY GRID"
         statusLabel.font = .monospacedSystemFont(ofSize: 10, weight: .medium)
-        statusLabel.textColor = UIColor(red: 0.42, green: 0.83, blue: 0.98, alpha: 1)
+        statusLabel.textColor = UIColor(red: 1.00, green: 0.78, blue: 0.12, alpha: 1)
         statusLabel.textAlignment = .center
         statusLabel.letterSpacing(1)
 
@@ -231,8 +231,8 @@ private final class FuturisticLaunchOverlay: UIView {
         track.layer.addSublayer(progressFill)
         progressTrackView = track
         progressFill.colors = [
-            UIColor(red: 0.10, green: 0.90, blue: 1, alpha: 1).cgColor,
-            UIColor(red: 0.30, green: 0.48, blue: 1, alpha: 1).cgColor
+            UIColor(red: 1.00, green: 0.78, blue: 0.12, alpha: 1).cgColor,
+            UIColor(red: 0.96, green: 0.18, blue: 0.58, alpha: 1).cgColor
         ]
         progressFill.startPoint = CGPoint(x: 0, y: 0.5)
         progressFill.endPoint = CGPoint(x: 1, y: 0.5)
@@ -318,7 +318,7 @@ private final class FuturisticLaunchOverlay: UIView {
         DispatchQueue.main.asyncAfter(deadline: .now() + remaining) { [weak self] in
             guard let self, self.isVisible else { return }
             self.progressLabel.text = "100%"
-            self.statusLabel.text = "CONNECTION READY"
+            self.statusLabel.text = "GRID CONNECTION ESTABLISHED"
             if let track = self.progressTrackView {
                 self.progressFill.frame.size.width = track.bounds.width
             }
