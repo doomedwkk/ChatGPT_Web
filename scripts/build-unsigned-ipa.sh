@@ -7,13 +7,17 @@ DERIVED_DATA_DIR="${BUILD_DIR}/DerivedData"
 PAYLOAD_DIR="${BUILD_DIR}/Payload"
 APP_PATH="${DERIVED_DATA_DIR}/Build/Products/Release-iphoneos/ChatGPTWeb.app"
 IPA_PATH="${BUILD_DIR}/ChatGPTWeb-unsigned.ipa"
-ICON_SVG="${ROOT_DIR}/Artwork/AnimeAppIcon.svg"
+ICON_JPG="${ROOT_DIR}/Artwork/UserAppIcon.jpg"
 ICON_PNG="${ROOT_DIR}/ChatGPTWeb/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"
 
 rm -rf "${DERIVED_DATA_DIR}" "${PAYLOAD_DIR}" "${IPA_PATH}"
 
-# Render the anime SVG into the PNG asset consumed by Xcode.
-swift "${ROOT_DIR}/scripts/render-app-icon.swift" "${ICON_SVG}" "${ICON_PNG}"
+# Convert the exact user-provided artwork into the 1024x1024 PNG required by the iOS asset catalog.
+if [[ ! -f "${ICON_JPG}" ]]; then
+    echo "User-provided app icon is missing: ${ICON_JPG}" >&2
+    exit 1
+fi
+sips -s format png -z 1024 1024 "${ICON_JPG}" --out "${ICON_PNG}" >/dev/null
 
 xcodebuild \
     -project "${ROOT_DIR}/ChatGPTWeb.xcodeproj" \
