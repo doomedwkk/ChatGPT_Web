@@ -10,14 +10,11 @@ IPA_PATH="${BUILD_DIR}/ChatGPTWeb-unsigned.ipa"
 ICON_JPG="${ROOT_DIR}/Artwork/UserAppIcon.jpg"
 ICON_PNG="${ROOT_DIR}/ChatGPTWeb/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"
 
-rm -rf "${DERIVED_DATA_DIR}" "${PAYLOAD_DIR}" "${IPA_PATH}"
-
-# Convert the exact user-provided artwork into the 1024x1024 PNG required by the iOS asset catalog.
 if [[ ! -f "${ICON_JPG}" ]]; then
     echo "User-provided app icon is missing: ${ICON_JPG}" >&2
     exit 1
 fi
-sips -s format png -z 1024 1024 "${ICON_JPG}" --out "${ICON_PNG}" >/dev/null
+sips --cropToHeightWidth 428 428 --cropOffset 42 42 -s format png -z 1024 1024 "${ICON_JPG}" --out "${ICON_PNG}" >/dev/null
 
 xcodebuild \
     -project "${ROOT_DIR}/ChatGPTWeb.xcodeproj" \
@@ -40,6 +37,4 @@ cp -R "${APP_PATH}" "${PAYLOAD_DIR}/"
     cd "${BUILD_DIR}"
     /usr/bin/zip -qry "${IPA_PATH}" Payload
 )
-rm -rf "${PAYLOAD_DIR}"
-
 echo "Unsigned IPA: ${IPA_PATH}"
