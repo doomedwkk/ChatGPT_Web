@@ -105,6 +105,11 @@ final class WebViewController: UIViewController {
 
 private final class FuturisticLaunchOverlay: UIView {
     private let backgroundGradient = CAGradientLayer()
+    private let citySilhouette = CAShapeLayer()
+    private let cityWindows = CAShapeLayer()
+    private let launchBillboard = CAShapeLayer()
+    private let launchBillboardText = CATextLayer()
+    private let cityScanBeam = CALayer()
     private let outerRing = CAShapeLayer()
     private let innerRing = CAShapeLayer()
     private let progressTrack = CALayer()
@@ -134,6 +139,7 @@ private final class FuturisticLaunchOverlay: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         backgroundGradient.frame = bounds
+        updateCityBackdrop()
         let center = CGPoint(x: logoContainer.frame.midX, y: logoContainer.frame.midY)
         if let track = progressTrackView {
             progressFill.frame = CGRect(x: 0, y: 0, width: track.bounds.width * currentProgress, height: track.bounds.height)
@@ -155,16 +161,49 @@ private final class FuturisticLaunchOverlay: UIView {
     }
 
     private func configureAppearance() {
-        backgroundColor = UIColor(red: 0.018, green: 0.020, blue: 0.030, alpha: 1)
+        backgroundColor = UIColor(red: 0.035, green: 0.055, blue: 0.090, alpha: 1)
 
         backgroundGradient.colors = [
-            UIColor(red: 0.10, green: 0.035, blue: 0.075, alpha: 1).cgColor,
-            UIColor(red: 0.025, green: 0.035, blue: 0.055, alpha: 1).cgColor,
-            UIColor(red: 0.008, green: 0.012, blue: 0.020, alpha: 1).cgColor
+            UIColor(red: 0.20, green: 0.055, blue: 0.20, alpha: 1).cgColor,
+            UIColor(red: 0.055, green: 0.12, blue: 0.22, alpha: 1).cgColor,
+            UIColor(red: 0.025, green: 0.075, blue: 0.13, alpha: 1).cgColor
         ]
         backgroundGradient.startPoint = CGPoint(x: 0.1, y: 0)
         backgroundGradient.endPoint = CGPoint(x: 0.9, y: 1)
         layer.insertSublayer(backgroundGradient, at: 0)
+
+        citySilhouette.fillColor = UIColor(red: 0.018, green: 0.035, blue: 0.065, alpha: 0.96).cgColor
+        citySilhouette.strokeColor = UIColor(red: 0.20, green: 0.88, blue: 0.96, alpha: 0.38).cgColor
+        citySilhouette.lineWidth = 1
+        layer.addSublayer(citySilhouette)
+
+        cityWindows.fillColor = UIColor.clear.cgColor
+        cityWindows.strokeColor = UIColor(red: 1.00, green: 0.78, blue: 0.25, alpha: 0.72).cgColor
+        cityWindows.lineWidth = 2
+        layer.addSublayer(cityWindows)
+
+        launchBillboard.fillColor = UIColor(red: 0.035, green: 0.12, blue: 0.20, alpha: 0.92).cgColor
+        launchBillboard.strokeColor = UIColor(red: 0.20, green: 0.92, blue: 0.98, alpha: 0.92).cgColor
+        launchBillboard.lineWidth = 1.4
+        launchBillboard.shadowColor = UIColor.cyan.cgColor
+        launchBillboard.shadowRadius = 15
+        launchBillboard.shadowOpacity = 0.9
+        launchBillboard.shadowOffset = .zero
+        layer.addSublayer(launchBillboard)
+
+        launchBillboardText.string = "NIGHT CITY  //  NEURAL NETWORK"
+        launchBillboardText.font = UIFont.monospacedSystemFont(ofSize: 8, weight: .bold)
+        launchBillboardText.fontSize = 8
+        launchBillboardText.foregroundColor = UIColor(red: 0.45, green: 0.98, blue: 0.98, alpha: 1).cgColor
+        launchBillboardText.alignmentMode = .center
+        launchBillboardText.contentsScale = UIScreen.main.scale
+        launchBillboard.addSublayer(launchBillboardText)
+
+        cityScanBeam.backgroundColor = UIColor(red: 0.30, green: 0.92, blue: 1.0, alpha: 0.38).cgColor
+        cityScanBeam.shadowColor = UIColor.cyan.cgColor
+        cityScanBeam.shadowRadius = 10
+        cityScanBeam.shadowOpacity = 0.9
+        layer.addSublayer(cityScanBeam)
 
         outerRing.fillColor = UIColor.clear.cgColor
         outerRing.strokeColor = UIColor(red: 1.00, green: 0.78, blue: 0.12, alpha: 0.95).cgColor
@@ -274,6 +313,47 @@ private final class FuturisticLaunchOverlay: UIView {
         ])
 
         animateRings()
+    }
+
+    private func updateCityBackdrop() {
+        let width = bounds.width
+        let height = bounds.height
+        guard width > 0, height > 0 else { return }
+
+        let baseY = height * 0.80
+        let normalizedHeights: [CGFloat] = [0.19, 0.30, 0.23, 0.42, 0.28, 0.35, 0.22, 0.46, 0.26, 0.34]
+        let normalizedWidths: [CGFloat] = [0.12, 0.10, 0.13, 0.09, 0.14, 0.11, 0.10, 0.13, 0.12, 0.12]
+        let skylinePath = UIBezierPath()
+        var x: CGFloat = -8
+        var index = 0
+        while x < width + 8 {
+            let w = width * normalizedWidths[index % normalizedWidths.count]
+            let h = height * normalizedHeights[index % normalizedHeights.count]
+            skylinePath.append(UIBezierPath(rect: CGRect(x: x, y: baseY - h, width: w, height: height - baseY + h + 20)))
+            x += w + 3
+            index += 1
+        }
+        citySilhouette.frame = bounds
+        citySilhouette.path = skylinePath.cgPath
+
+        let windows = UIBezierPath()
+        for column in 0..<Int(width / 22.0) {
+            for row in 0..<5 {
+                if (column * 3 + row) % 4 != 0 {
+                    let wx = CGFloat(column) * 22 + 7
+                    let wy = height * 0.56 + CGFloat(row) * 25
+                    windows.move(to: CGPoint(x: wx, y: wy))
+                    windows.addLine(to: CGPoint(x: wx + 6, y: wy))
+                }
+            }
+        }
+        cityWindows.frame = bounds
+        cityWindows.path = windows.cgPath
+
+        let signRect = CGRect(x: width * 0.48, y: height * 0.31, width: width * 0.46, height: 43)
+        launchBillboard.path = UIBezierPath(roundedRect: signRect, cornerRadius: 4).cgPath
+        launchBillboardText.frame = signRect.insetBy(dx: 5, dy: 14)
+        cityScanBeam.frame = CGRect(x: 0, y: height * 0.53, width: width, height: 1)
     }
 
     private func animateRings() {
