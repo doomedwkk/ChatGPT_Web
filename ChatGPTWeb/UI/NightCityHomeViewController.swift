@@ -9,6 +9,10 @@ final class NightCityHomeViewController: UIViewController {
     private let grid = CAShapeLayer()
     private let scanline = CALayer()
     private let backgroundGradient = CAGradientLayer()
+    private let horizonGlow = CAGradientLayer()
+    private let windowLights = CAShapeLayer()
+    private let billboard = CAShapeLayer()
+    private let billboardLabel = CATextLayer()
 
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
@@ -20,7 +24,14 @@ final class NightCityHomeViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         backgroundGradient.frame = view.bounds
+        horizonGlow.frame = CGRect(x: 0, y: view.bounds.height * 0.43, width: view.bounds.width, height: view.bounds.height * 0.38)
         skyline.frame = view.bounds
+        windowLights.frame = view.bounds
+        windowLights.path = windowPath(in: view.bounds).cgPath
+        billboard.frame = view.bounds
+        let boardRect = CGRect(x: view.bounds.width * 0.57, y: view.bounds.height * 0.29, width: view.bounds.width * 0.37, height: 66)
+        billboard.path = UIBezierPath(roundedRect: boardRect, cornerRadius: 4).cgPath
+        billboardLabel.frame = boardRect.insetBy(dx: 8, dy: 20)
         skyline.path = skylinePath(in: view.bounds, seed: 19).cgPath
         distantSkyline.frame = view.bounds
         distantSkyline.path = skylinePath(in: view.bounds, seed: 7).cgPath
@@ -39,6 +50,15 @@ final class NightCityHomeViewController: UIViewController {
         backgroundGradient.endPoint = CGPoint(x: 0.5, y: 1)
         view.layer.insertSublayer(backgroundGradient, at: 0)
 
+        horizonGlow.colors = [
+            magenta.withAlphaComponent(0.20).cgColor,
+            cyan.withAlphaComponent(0.06).cgColor,
+            UIColor.clear.cgColor
+        ]
+        horizonGlow.startPoint = CGPoint(x: 0.5, y: 0)
+        horizonGlow.endPoint = CGPoint(x: 0.5, y: 1)
+        view.layer.addSublayer(horizonGlow)
+
         distantSkyline.fillColor = UIColor(red: 0.10, green: 0.13, blue: 0.19, alpha: 0.55).cgColor
         distantSkyline.strokeColor = cyan.withAlphaComponent(0.18).cgColor
         distantSkyline.lineWidth = 1
@@ -47,6 +67,28 @@ final class NightCityHomeViewController: UIViewController {
         skyline.strokeColor = magenta.withAlphaComponent(0.34).cgColor
         skyline.lineWidth = 1
         view.layer.addSublayer(skyline)
+
+        windowLights.fillColor = UIColor.clear.cgColor
+        windowLights.strokeColor = yellow.withAlphaComponent(0.46).cgColor
+        windowLights.lineWidth = 2
+        view.layer.addSublayer(windowLights)
+
+        billboard.fillColor = UIColor(red: 0.02, green: 0.09, blue: 0.13, alpha: 0.72).cgColor
+        billboard.strokeColor = cyan.withAlphaComponent(0.78).cgColor
+        billboard.lineWidth = 1.2
+        billboard.shadowColor = cyan.cgColor
+        billboard.shadowRadius = 13
+        billboard.shadowOpacity = 0.55
+        billboard.shadowOffset = .zero
+        view.layer.addSublayer(billboard)
+        billboardLabel.string = "NIGHT CITY  //  LIVE FEED"
+        billboardLabel.font = CTFontCreateWithName("Menlo-Bold" as CFString, 9, nil)
+        billboardLabel.fontSize = 9
+        billboardLabel.foregroundColor = cyan.cgColor
+        billboardLabel.alignmentMode = .center
+        billboardLabel.contentsScale = UIScreen.main.scale
+        billboard.addSublayer(billboardLabel)
+
         grid.strokeColor = cyan.withAlphaComponent(0.07).cgColor
         grid.lineWidth = 0.5
         view.layer.addSublayer(grid)
@@ -195,6 +237,21 @@ final class NightCityHomeViewController: UIViewController {
         item.textColor = color
         item.font = .systemFont(ofSize: size, weight: bold ? .bold : .regular)
         return item
+    }
+
+    private func windowPath(in rect: CGRect) -> UIBezierPath {
+        let path = UIBezierPath()
+        var column = 0
+        stride(from: CGFloat(8), through: rect.width, by: 19).forEach { x in
+            stride(from: rect.height * 0.60, through: rect.height - 24, by: 24).forEach { y in
+                if (column * 7 + Int(y / 24)) % 4 != 0 {
+                    path.move(to: CGPoint(x: x, y: y))
+                    path.addLine(to: CGPoint(x: x + 5, y: y))
+                }
+            }
+            column += 1
+        }
+        return path
     }
 
     private func gridPath(in rect: CGRect) -> UIBezierPath {
