@@ -28,7 +28,7 @@ enum WebViewFactory {
 
     private static let nightCityTheme = #"""
     (() => {
-      const css = \`
+      const css = `
       :root {color-scheme:dark!important;--nc-ink:#f1f7ff;--nc-yellow:#ffe16b;--nc-cyan:#63f4ed;--nc-pink:#ff70c2;--nc-blue:#83baff;--nc-violet:#b49aff}
       html,body {min-height:100%;background:transparent!important;color:var(--nc-ink)!important;color-scheme:dark!important}
       body {background:transparent!important;color:var(--nc-ink)!important;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif!important}
@@ -82,7 +82,7 @@ enum WebViewFactory {
       ::selection {background:rgba(255,225,107,.38)!important;color:white!important}
       * {scrollbar-color:#5acbd6 transparent!important}
       @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-      \`;
+      `;
       const classify=()=>{
         const buttons=[...document.querySelectorAll('button')];
         buttons.forEach(b=>{
@@ -109,9 +109,9 @@ enum WebViewFactory {
           const world=document.createElement('div');world.className='nc-world';world.setAttribute('aria-hidden','true');
           const haze=document.createElement('div');haze.className='nc-haze';
           const rain=document.createElement('div');rain.className='nc-rain';
-          const a=document.createElement('div');a.className='nc-sign a';a.textContent='NIGHT CITY\\A LIVE FEED';a.style.whiteSpace='pre-line';
-          const b=document.createElement('div');b.className='nc-sign b';b.textContent='AFTERLIFE\\A NETRUNNER BAR';b.style.whiteSpace='pre-line';
-          const d=document.createElement('div');d.className='nc-sign c';d.textContent='NEON\\A DISTRICT 09';d.style.whiteSpace='pre-line';
+          const a=document.createElement('div');a.className='nc-sign a';a.textContent='NIGHT CITY\n LIVE FEED';a.style.whiteSpace='pre-line';
+          const b=document.createElement('div');b.className='nc-sign b';b.textContent='AFTERLIFE\n NETRUNNER BAR';b.style.whiteSpace='pre-line';
+          const d=document.createElement('div');d.className='nc-sign c';d.textContent='NEON\n DISTRICT 09';d.style.whiteSpace='pre-line';
           world.append(haze,rain,a,b,d);document.body.insertBefore(world,document.body.firstChild)
         }
         classify()
