@@ -74,7 +74,7 @@ enum WebViewFactory {
      }
      .nc-sign.a {top:17%;right:-8px;width:122px;min-height:66px;color:#fff1fb;border-color:var(--nc-pink);border-left-color:var(--nc-pink);background:linear-gradient(130deg,rgba(79,24,66,.92),rgba(27,36,67,.9));box-shadow:0 0 9px rgba(255,98,176,.6),0 0 28px rgba(255,98,176,.25);text-shadow:0 0 10px var(--nc-pink)}
      .nc-sign.b {top:39%;left:-13px;width:105px;min-height:54px;transform:perspective(180px) rotateY(8deg);border-color:var(--nc-yellow);border-left-color:var(--nc-yellow);background:linear-gradient(130deg,rgba(82,61,25,.94),rgba(27,36,67,.9));box-shadow:0 0 9px rgba(255,223,85,.55),0 0 24px rgba(255,223,85,.2);text-shadow:0 0 9px var(--nc-yellow)}
-     #root,#__next,body>div:not(.nc-world) {position:relative;z-index:1}
+     #root,#__next,body>div:not(.nc-world) {position:relative;z-index:1;background:transparent!important}
      main,[role=main],#thread,[data-testid*=conversation], [data-testid*=conversation-turns],
      [class*=conversation], [class*=Conversation] {background:transparent!important}
      body:before {content:"";position:fixed;top:0;left:0;right:0;height:3px;z-index:99999;pointer-events:none;background:linear-gradient(90deg,var(--nc-pink),var(--nc-violet),var(--nc-cyan),var(--nc-yellow));box-shadow:0 0 13px rgba(89,242,238,.7)}
