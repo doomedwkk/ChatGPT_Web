@@ -3,54 +3,57 @@ import WebKit
 enum WebViewFactory {
     static func makeConfiguration() -> WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
-        // Use the persistent website store so sign-in survives app relaunches.
         configuration.websiteDataStore = .default()
         configuration.defaultWebpagePreferences.allowsContentJavaScript = true
         configuration.allowsInlineMediaPlayback = true
         configuration.mediaTypesRequiringUserActionForPlayback = []
-
         let preferences = WKPreferences()
         preferences.isFraudulentWebsiteWarningEnabled = true
         configuration.preferences = preferences
-
-        // Presentation-only CSS; ChatGPT's own DOM and interaction logic remain intact.
-        let theme = WKUserScript(
-            source: Self.nightCityTheme,
-            injectionTime: .atDocumentStart,
-            forMainFrameOnly: true
-        )
+        let theme = WKUserScript(source: Self.nightCityTheme, injectionTime: .atDocumentStart, forMainFrameOnly: true)
         configuration.userContentController.addUserScript(theme)
         return configuration
     }
 
     static func makeWebView(configuration: WKWebViewConfiguration? = nil) -> WKWebView {
-        let webView = WKWebView(
-            frame: .zero,
-            configuration: configuration ?? makeConfiguration()
-        )
+        let webView = WKWebView(frame: .zero, configuration: configuration ?? makeConfiguration())
         webView.allowsBackForwardNavigationGestures = true
         webView.scrollView.contentInsetAdjustmentBehavior = .automatic
         webView.scrollView.keyboardDismissMode = .interactive
-        webView.backgroundColor = .black
-        webView.scrollView.backgroundColor = .black
+        webView.backgroundColor = .systemBackground
+        webView.scrollView.backgroundColor = .systemBackground
+        webView.isOpaque = false
         return webView
     }
 
     private static let nightCityTheme = #"""
     (() => {
-      const css = ":root{color-scheme:dark!important;--nc-yellow:#f8c62d;--nc-cyan:#39d9ec;--nc-magenta:#f04491;--nc-bg:#080b10;--nc-panel:#101720}\nhtml,body,body main,#__next{background:var(--nc-bg)!important;color:#e9edf2!important}\nheader,nav,[data-testid*='sidebar']{background:rgba(8,11,16,.97)!important;border-color:rgba(57,217,236,.18)!important}\nmain{background-image:linear-gradient(180deg,rgba(240,68,145,.035),transparent 24%,rgba(57,217,236,.025))!important}\n[data-message-author-role='user']{background:linear-gradient(110deg,rgba(248,198,45,.105),rgba(248,198,45,.035))!important;border:1px solid rgba(248,198,45,.30)!important;border-left:3px solid var(--nc-yellow)!important;border-radius:4px 12px 12px 4px!important;margin-top:12px!important;margin-bottom:12px!important}\n[data-message-author-role='assistant']{background:linear-gradient(110deg,rgba(57,217,236,.055),rgba(16,23,32,.30))!important;border-left:2px solid rgba(57,217,236,.72)!important;border-radius:2px 10px 10px 2px!important;margin-top:12px!important;margin-bottom:12px!important}\nform,[data-testid*='composer'],[class*='composer']{background:rgba(12,18,25,.97)!important;border-color:rgba(57,217,236,.35)!important;box-shadow:0 -8px 30px rgba(0,0,0,.28)!important}\ntextarea,[contenteditable='true']{color:#f2f4f7!important;caret-color:var(--nc-yellow)!important}\ntextarea::placeholder,[contenteditable='true'][data-placeholder]{color:rgba(215,225,235,.48)!important}\nbutton{accent-color:var(--nc-yellow)!important}\nbutton[data-testid*='send'],button[aria-label*='Send'],button[aria-label*='发送']{background:var(--nc-yellow)!important;color:#101318!important;border:1px solid rgba(255,230,150,.7)!important;border-radius:6px!important}\na{color:#65ddec!important}::selection{background:rgba(248,198,45,.32)!important}*{scrollbar-color:#344653 #090d13!important}";
-      const install = () => {
-        if (!document.documentElement) return;
-        let style = document.getElementById('night-city-terminal-theme');
-        if (!style) {
-          style = document.createElement('style');
-          style.id = 'night-city-terminal-theme';
-          style.textContent = css;
-          (document.head || document.documentElement).appendChild(style);
-        }
-      };
+      const css = `
+        :root { --nc-yellow:#f2bd22; --nc-cyan:#087f91; --nc-magenta:#bd286c; }
+        @media (prefers-color-scheme: dark) { :root { color-scheme:dark!important; --nc-bg:#090d13; --nc-panel:#111a24; --nc-panel-raised:#172330; --nc-text:#f3f5f7; --nc-muted:#c0cbd5; --nc-border:rgba(76,211,226,.34); --nc-user-bg:#282313; --nc-assistant-bg:#111d27; --nc-input-bg:#111923; } }
+        @media (prefers-color-scheme: light) { :root { color-scheme:light!important; --nc-bg:#eef1f3; --nc-panel:#fff; --nc-panel-raised:#e2e8ec; --nc-text:#151a20; --nc-muted:#414d58; --nc-border:rgba(0,104,121,.34); --nc-user-bg:#fff4cf; --nc-assistant-bg:#e4f2f4; --nc-input-bg:#fff; } }
+        html,body,#__next,main { background:var(--nc-bg)!important; color:var(--nc-text)!important; }
+        body { background-image:linear-gradient(135deg,rgba(242,189,34,.035),transparent 36%),repeating-linear-gradient(0deg,transparent 0,transparent 31px,rgba(8,127,145,.035) 32px)!important; }
+        body :where(p,span,div,li,h1,h2,h3,h4,h5,h6,strong,em,b,i,label,small,blockquote,td,th,time,figcaption,button,[role=button],code,pre,kbd,samp) { color:var(--nc-text)!important; }
+        body :where(a) { color:var(--nc-cyan)!important; }
+        ::placeholder { color:var(--nc-muted)!important; opacity:1!important; }
+        header,nav,[data-testid*=sidebar] { background:var(--nc-panel)!important; color:var(--nc-text)!important; border-color:var(--nc-border)!important; }
+        main { background-image:linear-gradient(180deg,rgba(189,40,108,.035),transparent 22%,rgba(8,127,145,.025))!important; }
+        [data-message-author-role=user] { background:var(--nc-user-bg)!important; color:var(--nc-text)!important; border:1px solid rgba(242,189,34,.48)!important; border-left:4px solid var(--nc-yellow)!important; border-radius:3px 12px 12px 3px!important; margin:12px 0!important; padding-top:8px!important; padding-bottom:8px!important; }
+        [data-message-author-role=assistant] { background:var(--nc-assistant-bg)!important; color:var(--nc-text)!important; border-left:3px solid var(--nc-cyan)!important; border-radius:2px 10px 10px 2px!important; margin:12px 0!important; padding-top:8px!important; padding-bottom:8px!important; }
+        [data-message-author-role=user] *,[data-message-author-role=assistant] * { color:var(--nc-text)!important; }
+        form,[data-testid*=composer],[class*=composer] { background:var(--nc-input-bg)!important; color:var(--nc-text)!important; border:1px solid var(--nc-border)!important; box-shadow:0 -8px 28px rgba(0,0,0,.12)!important; }
+        textarea,[contenteditable=true] { color:var(--nc-text)!important; caret-color:var(--nc-yellow)!important; -webkit-text-fill-color:var(--nc-text)!important; }
+        textarea::placeholder,[contenteditable=true][data-placeholder] { color:var(--nc-muted)!important; -webkit-text-fill-color:var(--nc-muted)!important; }
+        button[data-testid*=send],button[aria-label*=Send],button[aria-label*=发送] { background:var(--nc-yellow)!important; color:#171717!important; -webkit-text-fill-color:#171717!important; border:1px solid rgba(242,189,34,.85)!important; border-radius:6px!important; }
+        pre,code { background-color:var(--nc-panel-raised)!important; border-color:var(--nc-border)!important; }
+        ::selection { background:rgba(242,189,34,.38)!important; }
+        * { scrollbar-color:#667985 transparent!important; }
+      `;
+      const install=()=>{ if(!document.documentElement)return; let s=document.getElementById('night-city-terminal-theme'); if(!s){s=document.createElement('style');s.id='night-city-terminal-theme';s.textContent=css;(document.head||document.documentElement).appendChild(s);} };
       install();
-      new MutationObserver(install).observe(document, {childList: true, subtree: true});
+      new MutationObserver(install).observe(document,{childList:true,subtree:true});
+      if(window.matchMedia){const q=window.matchMedia('(prefers-color-scheme: dark)');const refresh=()=>{document.documentElement.style.colorScheme=q.matches?'dark':'light';install();};if(q.addEventListener)q.addEventListener('change',refresh);else if(q.addListener)q.addListener(refresh);refresh();}
     })();
     """#
 }
