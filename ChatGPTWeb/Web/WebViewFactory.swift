@@ -215,47 +215,82 @@ textarea::placeholder, [contenteditable=true][data-placeholder] {
 }
 
 /* controls */
-.nc-neon-control {
-  /* geometry stays native: outline and shadow never add layout */
+.nc-neon-control,
+.nc-signboard {
+  --nc-tube: #dff3ff;
+  --nc-tube-soft: rgba(223, 243, 255, .30);
   outline: 2px solid var(--nc-ink3) !important;
   outline-offset: 0 !important;
-  border-radius: 10px !important;
-  background: rgba(255, 255, 255, .045) !important;
-  color: #dbe7f6 !important;
-  box-shadow: 2px 2px 0 var(--nc-ink3) !important;
-  transition: transform .09s cubic-bezier(.2, .9, .2, 1), box-shadow .09s ease, background-color .12s ease !important;
+  border: 2px solid var(--nc-tube) !important;
+  border-radius: 6px !important;
+  background:
+    linear-gradient(180deg, rgba(12, 16, 26, .96), rgba(6, 9, 15, .98)) !important;
+  color: var(--nc-tube) !important;
+  font-weight: 800 !important;
+  letter-spacing: .10em !important;
+  text-transform: uppercase !important;
+  box-shadow:
+    0 0 0 1px rgba(7, 7, 13, .9),
+    0 0 12px var(--nc-tube-soft),
+    inset 0 0 10px rgba(7, 7, 13, .8) !important;
+  text-shadow: 0 0 8px var(--nc-tube-soft) !important;
+  transition: color .1s ease, background-color .1s ease, box-shadow .12s ease, transform .1s ease !important;
   -webkit-tap-highlight-color: transparent !important;
+  transform: skewX(-1.6deg) !important;
 }
-.nc-neon-control nc-icon,
-.nc-neon-control svg {
-  color: inherit !important;
-  filter: drop-shadow(0 0 6px currentColor) !important;
+.nc-neon-control::after,
+.nc-signboard::after {
+  content: '' !important;
+  position: absolute !important;
+  inset: 3px !important;
+  border: 1px solid rgba(255, 255, 255, .16) !important;
+  border-radius: 3px !important;
+  pointer-events: none !important;
+}
+.nc-neon-control svg,
+.nc-signboard svg {
+  filter: drop-shadow(0 0 6px var(--nc-tube)) !important;
 }
 .nc-neon-control.nc-attach {
-  color: var(--nc-cyan) !important;
-  background: rgba(37, 230, 255, .10) !important;
+  --nc-tube: var(--nc-cyan);
+  --nc-tube-soft: rgba(37, 230, 255, .38);
 }
 .nc-neon-control.nc-voice {
-  color: var(--nc-pink) !important;
-  background: rgba(255, 79, 154, .10) !important;
+  --nc-tube: var(--nc-pink);
+  --nc-tube-soft: rgba(255, 79, 154, .38);
 }
 .nc-neon-control.nc-stop {
-  color: #ff5c7a !important;
-  background: rgba(255, 77, 109, .14) !important;
+  --nc-tube: #ff5c7a;
+  --nc-tube-soft: rgba(255, 77, 109, .42);
 }
-.nc-neon-control.nc-send {
-  color: var(--nc-ink3) !important;
+.nc-neon-control.nc-send,
+.nc-signboard.nc-primary {
+  --nc-tube: var(--nc-yellow);
+  --nc-tube-soft: rgba(252, 238, 10, .42);
   background:
-    repeating-linear-gradient(135deg, rgba(7, 7, 13, 0) 0 6px, rgba(7, 7, 13, .10) 6px 12px),
-    linear-gradient(180deg, #fff45c, var(--nc-yellow)) !important;
-  box-shadow: 2px 2px 0 var(--nc-ink3), 0 0 14px rgba(252, 238, 10, .40) !important;
+    repeating-linear-gradient(135deg, rgba(7, 7, 13, 0) 0 7px, rgba(7, 7, 13, .12) 7px 14px),
+    linear-gradient(180deg, #fff86b, var(--nc-yellow)) !important;
+  color: var(--nc-ink3) !important;
+  text-shadow: none !important;
 }
 .nc-neon-control.nc-send svg {
   filter: none !important;
 }
-.nc-neon-control:active {
-  transform: translate(2px, 2px) !important;
-  box-shadow: none !important;
+.nc-neon-control:active,
+.nc-signboard:active {
+  background: var(--nc-tube) !important;
+  color: var(--nc-ink3) !important;
+  text-shadow: none !important;
+  box-shadow:
+    0 0 0 1px rgba(7, 7, 13, .9),
+    0 0 26px var(--nc-tube),
+    inset 0 0 12px rgba(255, 255, 255, .35) !important;
+  transform: skewX(-1.6deg) translateY(1px) !important;
+}
+.nc-signboard {
+  padding: 7px 14px !important;
+  font-size: 12.5px !important;
+  line-height: 1.2 !important;
 }
 
 [role=dialog] textarea, form textarea, textarea {
@@ -622,15 +657,32 @@ input[type=radio] {
     }
   }
 
+  function markSigns() {
+    var all = document.querySelectorAll('button, [role="button"]');
+    for (var i = 0; i < all.length; i += 1) {
+      var b = all[i];
+      if (b.dataset.ncSign === '1') continue;
+      if (b.closest('form, [data-testid*=composer]')) continue;
+      var label = (b.innerText || '').trim();
+      if (!label || label.length > 24) continue;
+      b.dataset.ncSign = '1';
+      b.classList.add('nc-signboard');
+      if (/^(保存|确定|确认|继续|完成|提交|新建|新聊天|save|confirm|continue|done|submit|ok)$/i.test(label)) {
+        b.classList.add('nc-primary');
+      }
+    }
+  }
+
   var pending = false;
   function schedule() {
     if (pending) return;
     pending = true;
-    setTimeout(function () { pending = false; mountWorld(); classify(); }, 220);
+    setTimeout(function () { pending = false; mountWorld(); classify(); markSigns(); }, 220);
   }
 
   mountWorld();
   classify();
+  markSigns();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', schedule, { once: true });
   }
