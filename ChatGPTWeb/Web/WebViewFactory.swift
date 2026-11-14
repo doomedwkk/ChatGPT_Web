@@ -176,9 +176,11 @@ enum WebViewFactory {
       }
       if(document.body&&!document.querySelector('.nc-world')){
        const world=document.createElement('div');world.className='nc-world';world.setAttribute('aria-hidden','true');
+       const haze=document.createElement('div');haze.className='nc-haze';
        const a=document.createElement('div');a.className='nc-sign a';a.textContent='NIGHT CITY\A CITY LIGHTS';a.style.whiteSpace='pre-line';
        const b=document.createElement('div');b.className='nc-sign b';b.textContent='AFTERLIFE\A NETRUNNER BAR';b.style.whiteSpace='pre-line';
-       world.append(a,b);document.body.insertBefore(world,document.body.firstChild);
+       const d=document.createElement('div');d.className='nc-sign c';d.textContent='NEON\A DISTRICT';d.style.whiteSpace='pre-line';
+       world.append(haze,a,b,d);document.body.insertBefore(world,document.body.firstChild);
       }
       classify();
      };
