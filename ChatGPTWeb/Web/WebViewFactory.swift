@@ -108,7 +108,7 @@ html, body {
 body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif !important;
 }
-#root, #__next, body > div:not(.nc-world):not(#nc-boot) {
+#root, #__next, body > div:not(.nc-world):not(#nc-boot):not([role="dialog"]):not([role="menu"]):not([data-testid*="modal"]):not([data-testid*="sheet"]) {
   position: relative;
   z-index: 1;
   background: transparent !important;
@@ -419,6 +419,232 @@ button:focus-visible, textarea:focus-visible, [contenteditable=true]:focus-visib
     scroll-behavior: auto !important;
   }
 }
+
+/* ==================================================================
+   EDGERUNNERS / BILLBOARD LAYER
+   Cel-print halftone, comic ink panels and neon signboard controls.
+   ================================================================== */
+
+:root {
+  --nc-ink3: #07070d;
+  --nc-paper: #f2ede2;
+  --nc-cyan-deep: #0aa7c4;
+}
+
+/* ---------- world: print halftone + cel grade ---------- */
+.nc-city {
+  filter: saturate(1.55) contrast(1.3) brightness(.74) !important;
+}
+.nc-grade {
+  background:
+    radial-gradient(120% 70% at 78% 6%, rgba(255, 79, 154, .34), rgba(255, 79, 154, 0) 58%),
+    radial-gradient(95% 62% at 10% 94%, rgba(37, 230, 255, .30), rgba(37, 230, 255, 0) 62%),
+    linear-gradient(180deg, rgba(5, 7, 14, .92) 0%, rgba(5, 7, 14, .52) 44%, rgba(5, 7, 14, .92) 100%) !important;
+}
+.nc-scan {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, .20) 0 1px, rgba(0, 0, 0, 0) 1px 3px),
+    radial-gradient(rgba(4, 6, 12, .55) .9px, rgba(0, 0, 0, 0) 1.1px) !important;
+  background-size: auto, 4px 4px !important;
+  mix-blend-mode: multiply;
+  opacity: .85 !important;
+}
+
+/* ---------- header: hazard billboard ---------- */
+.appbar,
+header[class*=sticky],
+main > header {
+  background: rgba(6, 8, 14, .92) !important;
+  border-bottom: 2px solid var(--nc-ink3) !important;
+  box-shadow: 0 2px 0 rgba(252, 238, 10, .55), 0 10px 24px rgba(0, 0, 0, .45) !important;
+}
+.appbar .model {
+  color: var(--nc-yellow) !important;
+  text-shadow: 0 0 10px rgba(252, 238, 10, .45);
+}
+
+/* ---------- message panels: comic ink ---------- */
+[data-message-author-role] {
+  position: relative !important;
+  border: 2.5px solid var(--nc-ink3) !important;
+  border-radius: 3px !important;
+  background:
+    linear-gradient(180deg, rgba(16, 21, 34, .94), rgba(8, 11, 19, .96)) !important;
+  box-shadow:
+    4px 4px 0 var(--nc-ink3),
+    9px 9px 0 rgba(37, 230, 255, .12),
+    0 0 26px rgba(37, 230, 255, .10) !important;
+  padding: 12px 13px 13px !important;
+  transform: skewX(-1.1deg);
+  -webkit-transform: skewX(-1.1deg);
+}
+[data-message-author-role=user] {
+  background:
+    linear-gradient(180deg, rgba(32, 20, 32, .95), rgba(14, 10, 20, .97)) !important;
+  box-shadow:
+    4px 4px 0 var(--nc-ink3),
+    9px 9px 0 rgba(255, 79, 154, .18),
+    0 0 26px rgba(255, 79, 154, .12) !important;
+  transform: skewX(1.1deg);
+  -webkit-transform: skewX(1.1deg);
+}
+[data-message-author-role]:before {
+  position: absolute !important;
+  top: -9px !important;
+  left: 10px !important;
+  padding: 1px 7px !important;
+  border: 2px solid var(--nc-ink3) !important;
+  border-radius: 2px !important;
+  font-size: 9.5px !important;
+  font-weight: 800 !important;
+  letter-spacing: .16em !important;
+  background: var(--nc-yellow) !important;
+  color: var(--nc-ink3) !important;
+  box-shadow: 2px 2px 0 var(--nc-ink3) !important;
+  text-shadow: none !important;
+}
+[data-message-author-role=user]:before {
+  background: var(--nc-pink) !important;
+  color: #fff !important;
+}
+[data-message-author-role=assistant]:before {
+  background: var(--nc-cyan) !important;
+  color: var(--nc-ink3) !important;
+}
+
+/* inline code keeps a billboard tick */
+[data-message-author-role] code {
+  background: rgba(252, 238, 10, .12) !important;
+  border: 1px solid rgba(252, 238, 10, .34) !important;
+  border-radius: 2px !important;
+  color: #ffe95c !important;
+}
+[data-message-author-role] pre {
+  border: 2px solid var(--nc-ink3) !important;
+  border-radius: 2px !important;
+  background: #06080e !important;
+  box-shadow: 3px 3px 0 rgba(37, 230, 255, .18) !important;
+}
+
+/* ---------- composer: neon signboard ---------- */
+form:has(textarea),
+[data-testid*=composer] {
+  border: 2.5px solid var(--nc-ink3) !important;
+  border-radius: 4px !important;
+  background: linear-gradient(180deg, #0d1220, #070a12) !important;
+  box-shadow: 4px 4px 0 var(--nc-ink3), 0 0 26px rgba(37, 230, 255, .16) !important;
+}
+.composer-wrap,
+[data-testid*=composer-wrap] {
+  background: linear-gradient(180deg, rgba(5, 7, 14, 0) 0%, rgba(5, 7, 14, .96) 46%) !important;
+}
+
+.nc-neon-control {
+  border: 2.5px solid var(--nc-ink3) !important;
+  border-radius: 3px !important;
+  box-shadow: 3px 3px 0 var(--nc-ink3) !important;
+  transition: transform .08s ease, box-shadow .08s ease, background .12s ease !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+.nc-neon-control:active {
+  transform: translate(3px, 3px) !important;
+  box-shadow: 0 0 0 var(--nc-ink3) !important;
+}
+.nc-neon-control.nc-attach {
+  color: var(--nc-ink3) !important;
+  background: linear-gradient(180deg, #6ff3ff, var(--nc-cyan-deep)) !important;
+  box-shadow: 3px 3px 0 var(--nc-ink3), 0 0 18px rgba(37, 230, 255, .45) !important;
+}
+.nc-neon-control.nc-voice {
+  color: var(--nc-ink3) !important;
+  background: linear-gradient(180deg, #ff8ec0, #d9276f) !important;
+  box-shadow: 3px 3px 0 var(--nc-ink3), 0 0 18px rgba(255, 79, 154, .45) !important;
+}
+.nc-neon-control.nc-stop {
+  color: #fff !important;
+  background: linear-gradient(180deg, #ff6b84, #c31f3c) !important;
+}
+.nc-neon-control.nc-send {
+  color: var(--nc-ink3) !important;
+  background:
+    repeating-linear-gradient(135deg, rgba(252, 238, 10, .0) 0 6px, rgba(7, 7, 13, .10) 6px 12px),
+    linear-gradient(180deg, #fff45c, var(--nc-yellow)) !important;
+  box-shadow: 3px 3px 0 var(--nc-ink3), 0 0 22px rgba(252, 238, 10, .55) !important;
+}
+.nc-neon-control svg {
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .28));
+}
+
+/* ---------- settings / menus / sheets ---------- */
+[role=dialog],
+[role=menu],
+[role=listbox],
+[data-testid*=modal],
+[data-testid*=sheet] {
+  background: #080b14 !important;
+  color: var(--nc-ink) !important;
+  border: 2.5px solid var(--nc-ink3) !important;
+  border-radius: 4px !important;
+  box-shadow:
+    6px 6px 0 var(--nc-ink3),
+    0 0 34px rgba(37, 230, 255, .14) !important;
+}
+[role=dialog] h1,
+[role=dialog] h2,
+[role=dialog] h3,
+[role=dialog] [role=heading] {
+  color: var(--nc-yellow) !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase;
+}
+[role=dialog] label,
+[role=dialog] [role=switch] + span {
+  color: #cfe0f5 !important;
+}
+[role=menuitem]:hover,
+[role=menuitem]:focus,
+[role=option][aria-selected=true] {
+  background: rgba(37, 230, 255, .14) !important;
+  box-shadow: inset 3px 0 0 var(--nc-cyan) !important;
+  color: #fff !important;
+}
+[role=menu] {
+  border-left: 3px solid var(--nc-yellow) !important;
+}
+[role=dialog] input,
+[role=dialog] textarea,
+[role=dialog] select {
+  background: #05070d !important;
+  border: 2px solid rgba(37, 230, 255, .38) !important;
+  border-radius: 3px !important;
+  color: var(--nc-ink) !important;
+}
+[role=dialog] input:focus,
+[role=dialog] textarea:focus,
+[role=dialog] select:focus {
+  border-color: var(--nc-yellow) !important;
+  box-shadow: 0 0 0 2px rgba(252, 238, 10, .22) !important;
+  outline: none !important;
+}
+[role=dialog] button,
+[data-testid*=modal] button {
+  border: 2px solid var(--nc-ink3) !important;
+  border-radius: 3px !important;
+  box-shadow: 2px 2px 0 var(--nc-ink3) !important;
+}
+[role=dialog] button:active,
+[data-testid*=modal] button:active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: none !important;
+}
+[role=switch],
+input[type=checkbox],
+input[type=radio] {
+  accent-color: var(--nc-yellow) !important;
+}
+[role=switch][aria-checked=true] {
+  background: var(--nc-yellow) !important;
+}
 `;
   if (!document.getElementById('nc-theme-style')) {
     var style = document.createElement('style');
@@ -474,23 +700,109 @@ button:focus-visible, textarea:focus-visible, [contenteditable=true]:focus-visib
 })();
 
 /* Night City boot overlay: plays once per web view, covers the WKWebView's
-   first paint, then glitches out as soon as the app is usable. */
+   first paint, rings the bell swell and hands over to the app. */
 (function () {
   var BOOT_KEY = 'nc.boot.seen';
   try { if (sessionStorage.getItem(BOOT_KEY) === '1') return; } catch (e) { /* private mode */ }
 
-  var LINES = [
-    ['SESSION HANDSHAKE', 'SYNCED'],
-    ['KIROSHI OPTICS', 'ONLINE'],
-    ['MEMORY BANK MOUNT', 'OK'],
-    ['ICE BREAKER', 'ARMED'],
-    ['NETWATCH BYPASS', 'CLEAN'],
-    ['DAEMON SIGNATURE', 'TRUSTED']
-  ];
-
   var reduced = false;
   try { reduced = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { /* unsupported */ }
 
+  /* ---------- the ring: C-major bell swell, same voice as the DSH plugin ---------- */
+  function createRing() {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    var ctx;
+    try { ctx = new AC(); } catch (e) { return null; }
+    var master = ctx.createGain();
+    master.gain.value = 0.0001;
+    var comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -16;
+    comp.ratio.value = 4;
+    comp.attack.value = 0.004;
+    comp.release.value = 0.28;
+    master.connect(comp);
+    comp.connect(ctx.destination);
+    var started = [];
+    var ended = false;
+
+    function bell(at, gain) {
+      var partials = [[261.63, 0.12], [523.25, 0.5], [783.99, 0.16], [1046.5, 0.34],
+        [1567.98, 0.22], [2093, 0.13], [2637, 0.075], [3136, 0.05]];
+      for (var i = 0; i < partials.length; i += 1) {
+        var osc = ctx.createOscillator();
+        var g = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = partials[i][0];
+        osc.detune.value = (Math.random() - 0.5) * 4;
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.linearRampToValueAtTime(partials[i][1] * 0.5 * gain, at + 0.06);
+        g.gain.linearRampToValueAtTime(partials[i][1] * 0.34 * gain, at + 0.32);
+        g.gain.exponentialRampToValueAtTime(0.0002, at + 1.35);
+        osc.connect(g);
+        g.connect(master);
+        osc.start(at);
+        osc.stop(at + 1.4);
+        started.push(osc);
+      }
+    }
+
+    return {
+      begin: function () {
+        if (ended) return;
+        var t = ctx.currentTime;
+        try { ctx.resume(); } catch (e) { /* ignore */ }
+        master.gain.setValueAtTime(0.0001, t);
+        master.gain.exponentialRampToValueAtTime(0.85, t + 0.06);
+        bell(t + 0.15, 1);
+        bell(t + 1.85, 0.82);
+        if (!reduced) bell(t + 3.55, 0.5);
+        setTimeout(function () { this.end(false); }.bind(this), 5200);
+      },
+      end: function (fast) {
+        if (ended) return;
+        ended = true;
+        var t = ctx.currentTime;
+        try {
+          master.gain.cancelScheduledValues(t);
+          master.gain.setValueAtTime(master.gain.value, t);
+          master.gain.exponentialRampToValueAtTime(0.0001, t + (fast ? 0.12 : 0.5));
+        } catch (e) { /* ignore */ }
+        setTimeout(function () {
+          for (var i = 0; i < started.length; i += 1) {
+            try { started[i].stop(); } catch (e) { /* already stopped */ }
+          }
+          try { ctx.close(); } catch (e) { /* ignore */ }
+        }, fast ? 200 : 700);
+      },
+      state: function () { return ctx.state; }
+    };
+  }
+
+  var ring = createRing();
+  function armRing() {
+    if (!ring) return;
+    try { if (ring.state() === 'running') { ring.begin(); return; } } catch (e) { /* ignore */ }
+    /* iOS keeps a WKWebView's AudioContext suspended until a gesture. */
+    var kick = function () {
+      window.removeEventListener('touchstart', kick, true);
+      window.removeEventListener('pointerdown', kick, true);
+      window.removeEventListener('click', kick, true);
+      try { if (ring.state() !== 'running') return; ring.begin(); } catch (e) { /* ignore */ }
+    };
+    try {
+      if (ring.state() === 'running') { ring.begin(); return; }
+    } catch (e) { /* ignore */ }
+    window.addEventListener('touchstart', kick, { capture: true, once: true });
+    window.addEventListener('pointerdown', kick, { capture: true, once: true });
+    window.addEventListener('click', kick, { capture: true, once: true });
+    /* after a short grace period, ring anyway in case the context was allowed */
+    setTimeout(function () {
+      try { if (ring.state() === 'running') { ring.begin(); } } catch (e) { /* ignore */ }
+    }, 260);
+  }
+
+  /* ---------- overlay ---------- */
   var boot = document.createElement('div');
   boot.id = 'nc-boot';
   boot.setAttribute('aria-hidden', 'true');
@@ -512,10 +824,7 @@ button:focus-visible, textarea:focus-visible, [contenteditable=true]:focus-visib
           '<div class="nc-brandline"><i class="nc-rule"></i><span class="nc-sub">CHATGPT WEB</span><i class="nc-rule"></i></div>' +
           '<div class="nc-tag">NEURAL LINK ONLINE · JACKING IN</div>' +
         '</div>' +
-        '<div class="nc-prog"><div class="nc-track"><div class="nc-bar"></div></div>' +
-          '<div class="nc-meta"><span class="nc-status">LINKING</span><span class="nc-pct">000%</span></div></div>' +
       '</div>' +
-      '<div class="nc-log"></div>' +
       '<div class="nc-boot-foot"><span class="nc-hint">TAP TO SKIP</span><span>ICE-9 // HANDSHAKE</span></div>' +
     '</div>';
 
@@ -530,38 +839,9 @@ button:focus-visible, textarea:focus-visible, [contenteditable=true]:focus-visib
     document.addEventListener('DOMContentLoaded', mount, { once: true });
   }
 
-  var bar = boot.querySelector('.nc-bar');
-  var pct = boot.querySelector('.nc-pct');
-  var status = boot.querySelector('.nc-status');
-  var log = boot.querySelector('.nc-log');
-  var lines = 0;
-  var shown = 0;
-  var progress = 0;
-  var ready = false;
   var finished = false;
-
   var started = performance.now();
-  var LOG_AT = reduced ? 60 : 280;
-  var LOG_STEP = reduced ? 50 : 190;
-  var HOLD = reduced ? 40 : 88;
-
-  function paint(p) {
-    progress = p;
-    bar.style.width = p + '%';
-    pct.textContent = (p < 10 ? '00' : p < 100 ? '0' : '') + Math.round(p) + '%';
-  }
-
-  function addLine() {
-    var item = LINES[lines];
-    if (!item) return;
-    lines += 1;
-    var row = document.createElement('div');
-    row.className = 'nc-row';
-    row.innerHTML = '<span class="nc-arrow">\u203A</span><span>' + item[0] +
-      '</span><span class="nc-lead"></span><span class="nc-v">' + item[1] + '</span>';
-    log.appendChild(row);
-    if (log.children.length > 6) log.removeChild(log.firstChild);
-  }
+  var MIN_SHOW = reduced ? 900 : 3400;
 
   function appReady() {
     try {
@@ -573,33 +853,18 @@ button:focus-visible, textarea:focus-visible, [contenteditable=true]:focus-visib
   function finish(force) {
     if (finished) return;
     finished = true;
-    paint(100);
-    status.textContent = 'SYSTEM READY';
-    var wait = force ? 120 : 360;
+    if (ring) { try { ring.end(force); } catch (e) { /* ignore */ } }
     setTimeout(function () {
       boot.classList.add('nc-boot-out');
       setTimeout(function () { boot.remove(); }, 420);
-    }, reduced ? 60 : wait);
+    }, force ? 0 : 120);
   }
 
   var timer = setInterval(function () {
     var t = performance.now() - started;
-
-    var want = t < LOG_AT ? 0 : Math.min(LINES.length, Math.floor((t - LOG_AT) / LOG_STEP) + 1);
-    while (shown < want) { addLine(); shown += 1; }
-
-    if (!ready) {
-      var target = Math.min(HOLD, (t / 1750) * HOLD);
-      if (target > progress) paint(Math.min(HOLD, Math.round(target)));
-      if (appReady()) { ready = true; status.textContent = 'SYNCING'; }
-    }
-
-    if (ready) {
-      paint(Math.min(100, progress + 3));
-      if (progress >= 100) finish(false);
-    }
-    if (t > 12000) finish(true);
-  }, 60);
+    if (t > MIN_SHOW && appReady()) finish(false);
+    if (t > 9000) finish(true);
+  }, 80);
 
   function skip(ev) {
     if (ev) { ev.preventDefault(); ev.stopPropagation(); }
@@ -608,6 +873,7 @@ button:focus-visible, textarea:focus-visible, [contenteditable=true]:focus-visib
     finish(true);
   }
 
+  armRing();
   boot.addEventListener('pointerdown', skip, { capture: true });
   window.addEventListener('keydown', skip, { capture: true, once: true });
   setTimeout(function () {
