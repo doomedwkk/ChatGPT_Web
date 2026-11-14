@@ -7,21 +7,19 @@ DERIVED_DATA_DIR="${BUILD_DIR}/DerivedData"
 PAYLOAD_DIR="${BUILD_DIR}/Payload"
 APP_PATH="${DERIVED_DATA_DIR}/Build/Products/Release-iphoneos/ChatGPTWeb.app"
 IPA_PATH="${BUILD_DIR}/ChatGPTWeb-unsigned.ipa"
-ICON_JPG="${ROOT_DIR}/Artwork/UserAppIcon.jpg"
-ICON_CROPPED="${BUILD_DIR}/UserAppIcon-cropped.png"
 ICON_PNG="${ROOT_DIR}/ChatGPTWeb/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"
 
-if [[ ! -f "${ICON_JPG}" ]]; then
-    echo "User-provided app icon is missing: ${ICON_JPG}" >&2
+# Use the committed 1024x1024 app icon directly. Do not regenerate it from
+# the old compressed JPG, which would overwrite the user-approved artwork.
+if [[ ! -f "${ICON_PNG}" ]]; then
+    echo "App icon is missing: ${ICON_PNG}" >&2
     exit 1
 fi
 
-mkdir -p "${BUILD_DIR}"
-# Crop the supplied rounded white canvas in a separate pass, then resize.
-sips --cropToHeightWidth 428 428 --cropOffset 42 42 -s format png "${ICON_JPG}" --out "${ICON_CROPPED}" >/dev/null
-sips --resampleHeightWidth 1024 1024 "${ICON_CROPPED}" --out "${ICON_PNG}" >/dev/null
 test "$(sips -g pixelWidth "${ICON_PNG}" | awk '/pixelWidth/ {print $2}')" = "1024"
 test "$(sips -g pixelHeight "${ICON_PNG}" | awk '/pixelHeight/ {print $2}')" = "1024"
+
+mkdir -p "${BUILD_DIR}"
 
 xcodebuild \
     -project "${ROOT_DIR}/ChatGPTWeb.xcodeproj" \
