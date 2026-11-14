@@ -116,7 +116,9 @@ private final class FuturisticLaunchOverlay: UIView {
     private let subtitleLabel = UILabel()
     private let logoContainer = UIView()
     private let logoLabel = UILabel()
-    private var progressWidthConstraint: NSLayoutConstraint!
+    private weak var progressTrackView: UIView?
+    private var currentProgress: CGFloat = 0.04
+    private var scanAnimationStarted = false
     private var startedAt = Date()
     private(set) var isVisible = true
 
@@ -134,6 +136,19 @@ private final class FuturisticLaunchOverlay: UIView {
         super.layoutSubviews()
         backgroundGradient.frame = bounds
         let center = CGPoint(x: logoContainer.bounds.midX, y: logoContainer.bounds.midY)
+        if let track = progressTrackView {
+            progressFill.frame = CGRect(x: 0, y: 0, width: track.bounds.width * currentProgress, height: track.bounds.height)
+            scanLine.frame = CGRect(x: 0, y: 0, width: 3, height: track.bounds.height)
+            if !scanAnimationStarted, track.bounds.width > 0 {
+                scanAnimationStarted = true
+                let animation = CABasicAnimation(keyPath: "position.x")
+                animation.fromValue = 0
+                animation.toValue = track.bounds.width
+                animation.duration = 1.4
+                animation.repeatCount = .infinity
+                scanLine.add(animation, forKey: "scan")
+            }
+        }
         let outerRect = CGRect(x: center.x - 61, y: center.y - 61, width: 122, height: 122)
         let innerRect = CGRect(x: center.x - 49, y: center.y - 49, width: 98, height: 98)
         outerRing.path = UIBezierPath(ovalIn: outerRect).cgPath
@@ -215,6 +230,7 @@ private final class FuturisticLaunchOverlay: UIView {
         track.clipsToBounds = true
         progressTrack.backgroundColor = UIColor.clear.cgColor
         track.layer.addSublayer(progressFill)
+        progressTrackView = track
         progressFill.colors = [
             UIColor(red: 0.10, green: 0.90, blue: 1, alpha: 1).cgColor,
             UIColor(red: 0.30, green: 0.48, blue: 1, alpha: 1).cgColor
@@ -258,13 +274,7 @@ private final class FuturisticLaunchOverlay: UIView {
             progressLabel.heightAnchor.constraint(equalToConstant: 16)
         ])
 
-        progressWidthConstraint = progressFill.widthAnchor.constraint(equalToConstant: 0)
-        progressWidthConstraint.isActive = false
-        track.layoutIfNeeded()
-        progressFill.frame = CGRect(x: 0, y: 0, width: 0, height: 6)
-        scanLine.frame = CGRect(x: 0, y: 0, width: 3, height: 6)
         animateRings()
-        animateScanLine()
     }
 
     private func animateRings() {
@@ -291,23 +301,15 @@ private final class FuturisticLaunchOverlay: UIView {
         logoContainer.layer.add(pulse, forKey: "logoPulse")
     }
 
-    private func animateScanLine() {
-        let animation = CABasicAnimation(keyPath: "position.x")
-        animation.fromValue = 0
-        animation.toValue = 220
-        animation.duration = 1.4
-        animation.repeatCount = .infinity
-        scanLine.add(animation, forKey: "scan")
-    }
-
     func setProgress(_ value: Double) {
-        let progress = min(max(value, 0.04), 0.94)
+        let progress = CGFloat(min(max(value, 0.04), 0.94))
+        currentProgress = progress
         let percent = Int(progress * 100)
         progressLabel.text = "\(percent)%"
-        let width = bounds.width * 0.68 * progress
+        guard let track = progressTrackView else { return }
         CATransaction.begin()
         CATransaction.setAnimationDuration(0.18)
-        progressFill.frame = CGRect(x: 0, y: 0, width: width, height: 6)
+        progressFill.frame = CGRect(x: 0, y: 0, width: track.bounds.width * progress, height: track.bounds.height)
         CATransaction.commit()
     }
 
@@ -318,7 +320,9 @@ private final class FuturisticLaunchOverlay: UIView {
             guard let self, self.isVisible else { return }
             self.progressLabel.text = "100%"
             self.statusLabel.text = "CONNECTION READY"
-            self.progressFill.frame.size.width = self.bounds.width * 0.68
+            if let track = self.progressTrackView {
+                self.progressFill.frame.size.width = track.bounds.width
+            }
             UIView.animate(withDuration: 0.35, delay: 0.18, options: .curveEaseOut) {
                 self.alpha = 0
             } completion: { _ in
