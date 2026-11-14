@@ -8,6 +8,7 @@ final class NightCityHomeViewController: UIViewController {
     private let distantSkyline = CAShapeLayer()
     private let grid = CAShapeLayer()
     private let scanline = CALayer()
+    private let backgroundGradient = CAGradientLayer()
 
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
@@ -18,6 +19,7 @@ final class NightCityHomeViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        backgroundGradient.frame = view.bounds
         skyline.frame = view.bounds
         skyline.path = skylinePath(in: view.bounds, seed: 19).cgPath
         distantSkyline.frame = view.bounds
@@ -28,17 +30,14 @@ final class NightCityHomeViewController: UIViewController {
 
     private func buildScene() {
         view.backgroundColor = UIColor(red: 0.018, green: 0.020, blue: 0.030, alpha: 1)
-        let background = CAGradientLayer()
-        background.colors = [
+        backgroundGradient.colors = [
             UIColor(red: 0.10, green: 0.035, blue: 0.075, alpha: 1).cgColor,
             UIColor(red: 0.025, green: 0.035, blue: 0.055, alpha: 1).cgColor,
             UIColor(red: 0.008, green: 0.012, blue: 0.020, alpha: 1).cgColor
         ]
-        background.startPoint = CGPoint(x: 0.5, y: 0)
-        background.endPoint = CGPoint(x: 0.5, y: 1)
-        background.frame = view.bounds
-        background.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
-        view.layer.insertSublayer(background, at: 0)
+        backgroundGradient.startPoint = CGPoint(x: 0.5, y: 0)
+        backgroundGradient.endPoint = CGPoint(x: 0.5, y: 1)
+        view.layer.insertSublayer(backgroundGradient, at: 0)
 
         distantSkyline.fillColor = UIColor(red: 0.10, green: 0.13, blue: 0.19, alpha: 0.55).cgColor
         distantSkyline.strokeColor = cyan.withAlphaComponent(0.18).cgColor
