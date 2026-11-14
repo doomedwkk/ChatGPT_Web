@@ -11,6 +11,12 @@
 </defs>
 <rect width="1024" height="1024" rx="220" fill="url(#bg)"/>
 <circle cx="800" cy="230" r="260" fill="url(#glow)"/>
+<!-- recognizable cyan GPT-style knot emblem in the upper-right -->
+<g transform="translate(806 235)" fill="none" stroke="#8af6ff" stroke-width="17" stroke-linecap="round" stroke-linejoin="round" opacity=".98">
+ <path d="M0 -92 C42 -92 67 -58 58 -22 C51 8 22 23 0 36 C-22 49 -51 34 -58 5 C-67 -31 -42 -65 0 -65 C42 -65 67 -31 58 5 C51 34 22 49 0 62 C-22 75 -51 60 -58 31 C-67 -5 -42 -39 0 -39 C42 -39 67 -5 58 31 C51 60 22 75 0 88"/>
+ <path d="M-80 -46 C-59 -82 -16 -86 11 -64 C34 -46 35 -12 35 14 C35 40 8 57 -18 57 C-51 57 -69 30 -57 1 C-45 -28 -12 -44 11 -64"/>
+ <path d="M80 -46 C59 -82 16 -86 -11 -64 C-34 -46 -35 -12 -35 14 C-35 40 -8 57 18 57 C51 57 69 30 57 1 C45 -28 12 -44 -11 -64"/>
+</g>
 <g fill="#bafaff"><path d="M820 78l15 44 44 15-44 15-15 44-15-44-44-15 44-15z"/><circle cx="170" cy="220" r="9"/><circle cx="900" cy="610" r="7"/><circle cx="130" cy="720" r="6"/><circle cx="710" cy="90" r="6"/></g>
 <path d="M0 600Q170 420 300 560T620 510T1024 420V1024H0Z" fill="#153c9d" opacity=".42"/>
 <!-- shoulders -->
