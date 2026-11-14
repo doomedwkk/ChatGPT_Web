@@ -371,6 +371,23 @@ private final class FuturisticLaunchOverlay: UIView {
         inner.repeatCount = .infinity
         innerRing.add(inner, forKey: "innerRotation")
 
+        if !UIAccessibility.isReduceMotionEnabled {
+            let sweep = CABasicAnimation(keyPath: "position.y")
+            sweep.fromValue = bounds.height * 0.48
+            sweep.toValue = bounds.height * 0.82
+            sweep.duration = 3.8
+            sweep.repeatCount = .infinity
+            cityScanBeam.add(sweep, forKey: "citySweep")
+
+            let glow = CABasicAnimation(keyPath: "shadowOpacity")
+            glow.fromValue = 0.45
+            glow.toValue = 1
+            glow.duration = 1.6
+            glow.autoreverses = true
+            glow.repeatCount = .infinity
+            launchBillboard.add(glow, forKey: "billboardGlow")
+        }
+
         let pulse = CABasicAnimation(keyPath: "opacity")
         pulse.fromValue = 0.65
         pulse.toValue = 1
