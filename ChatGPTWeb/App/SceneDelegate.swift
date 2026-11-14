@@ -11,10 +11,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
 
         let window = UIWindow(windowScene: windowScene)
-        let home = NightCityHomeViewController()
-        let navigationController = UINavigationController(rootViewController: home)
-        navigationController.setNavigationBarHidden(true, animated: false)
-        window.rootViewController = navigationController
+        window.rootViewController = WebViewController()
         window.makeKeyAndVisible()
         self.window = window
     }
