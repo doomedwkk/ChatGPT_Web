@@ -175,7 +175,7 @@ enum WebViewFactory {
         @media (prefers-reduced-motion:reduce) {
           *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
         }
-      
+      `;
       const install=()=>{ if(!document.documentElement)return; let s=document.getElementById('night-city-terminal-theme'); if(!s){s=document.createElement('style');s.id='night-city-terminal-theme';s.textContent=css;(document.head||document.documentElement).appendChild(s);} };
       install();
       new MutationObserver(install).observe(document,{childList:true,subtree:true});
