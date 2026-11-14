@@ -52,14 +52,16 @@ enum WebViewFactory {
       nav,aside,[role=navigation],[data-testid*=sidebar] {color:#f0f8ff!important;background:linear-gradient(145deg,rgba(35,52,79,.98),rgba(20,39,64,.98))!important;border-color:rgba(131,186,255,.48)!important;box-shadow:8px 0 32px rgba(3,9,20,.32)!important}
       nav :where(span,p,a,button,div),aside :where(span,p,a,button,div),[role=navigation] :where(span,p,a,button,div),[data-testid*=sidebar] :where(span,p,a,button,div) {color:#f1f8ff!important}
       nav button,aside button,[role=navigation] button,[data-testid*=sidebar] button {background:rgba(91,154,202,.13)!important;border:1px solid rgba(125,190,225,.20)!important;border-radius:8px!important}
-      [data-message-author-role] {position:relative!important;isolation:isolate;box-sizing:border-box!important;padding:23px 16px 16px!important;border-radius:15px 3px 15px 3px!important;backdrop-filter:blur(15px)!important;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))!important}
+      [data-message-author-role] {position:relative!important;isolation:isolate;box-sizing:border-box!important;padding:23px 16px 16px!important;border-radius:15px 3px 15px 3px!important;backdrop-filter:blur(15px)!important;overflow-wrap:anywhere!important}
       [data-message-author-role]:before {position:absolute;top:5px;left:14px;z-index:2;font:800 8px/1.2 ui-monospace,Menlo,monospace;letter-spacing:1.4px;opacity:.92;pointer-events:none}
+      [data-message-author-role]:after {content:"";position:absolute;top:8px;right:13px;width:24px;height:2px;background:currentColor;opacity:.8;box-shadow:0 0 8px currentColor;pointer-events:none}
       [data-message-author-role=user] {background:linear-gradient(120deg,rgba(95,66,25,.88),rgba(48,48,67,.91))!important;border:1px solid rgba(255,225,107,.76)!important;border-right:3px solid var(--nc-yellow)!important;box-shadow:0 8px 22px rgba(0,0,0,.30),0 0 18px rgba(255,225,107,.13),inset 0 0 22px rgba(255,225,107,.10)!important;margin:16px 0 20px auto!important;max-width:min(94%,780px)!important}
       [data-message-author-role=user]:before {content:"OUTGOING // USER TRANSMISSION";color:var(--nc-yellow);text-shadow:0 0 8px rgba(255,225,107,.8)}
       [data-message-author-role=assistant] {background:linear-gradient(125deg,rgba(20,66,82,.90),rgba(43,39,78,.93))!important;border:1px solid rgba(99,244,237,.68)!important;border-left:3px solid var(--nc-cyan)!important;box-shadow:0 8px 24px rgba(0,0,0,.30),0 0 20px rgba(99,244,237,.15),inset 0 0 22px rgba(99,244,237,.09)!important;margin:18px 0 24px!important}
       [data-message-author-role=assistant]:before {content:"INCOMING // NETRUNNER RESPONSE";color:var(--nc-cyan);text-shadow:0 0 8px rgba(99,244,237,.8)}
       [data-message-author-role=user] :where(p,span,div,li,strong,em,b,i),[data-message-author-role=assistant] :where(p,span,div,li,strong,em,b,i,blockquote,td,th) {color:#f4f8ff!important}
-      [data-message-author-role] pre,[data-message-author-role] code,pre,code {background:rgba(7,18,35,.88)!important;color:#d2fbff!important;border:1px solid rgba(99,244,237,.36)!important;border-radius:7px!important}
+      [data-message-author-role] pre,pre {max-width:100%!important;overflow-x:auto!important;white-space:pre!important}
+      [data-message-author-role] code,[data-message-author-role] pre,pre,code {background:rgba(7,18,35,.88)!important;color:#d2fbff!important;border:1px solid rgba(99,244,237,.36)!important;border-radius:7px!important}
       form:has(textarea),[data-testid*=composer],[class*=composer] {background:linear-gradient(120deg,rgba(17,43,65,.94),rgba(48,34,69,.95))!important;border:1px solid rgba(99,244,237,.74)!important;border-radius:15px 4px 15px 4px!important;box-shadow:0 -5px 25px rgba(0,0,0,.26),0 0 20px rgba(99,244,237,.22),inset 0 1px rgba(255,255,255,.12)!important;backdrop-filter:blur(18px)!important}
       form:has(textarea) {padding:8px!important}
       textarea,[contenteditable=true] {color:#f5fbff!important;-webkit-text-fill-color:#f5fbff!important;caret-color:var(--nc-yellow)!important}
@@ -97,7 +99,7 @@ enum WebViewFactory {
         });
         document.querySelectorAll('form,[data-testid*=composer],[class*=composer]').forEach(c=>{
           const controls=[...c.querySelectorAll('button.nc-neon-control')];
-          if(controls.length>1) {const parent=controls[0].parentElement;if(parent&&controls.every(b=>b.parentElement===parent))parent.classList.add('nc-control-row')}
+          if(controls.length>1) {const parent=controls[0].parentElement;if(parent&&controls.every(b=>b.parentElement===parent)&&[...parent.children].every(child=>child.tagName==='BUTTON'))parent.classList.add('nc-control-row')}
         });
       };
       const install=()=>{
