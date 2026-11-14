@@ -82,7 +82,7 @@ final class NightCityHomeViewController: UIViewController {
         billboard.shadowOffset = .zero
         view.layer.addSublayer(billboard)
         billboardLabel.string = "NIGHT CITY  //  LIVE FEED"
-        billboardLabel.font = CTFontCreateWithName("Menlo-Bold" as CFString, 9, nil)
+        billboardLabel.font = UIFont.monospacedSystemFont(ofSize: 9, weight: .bold)
         billboardLabel.fontSize = 9
         billboardLabel.foregroundColor = cyan.cgColor
         billboardLabel.alignmentMode = .center
